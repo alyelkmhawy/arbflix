@@ -19,7 +19,7 @@ API_KEY = os.environ.get("TMDB_API_KEY", "")
 AFFILIATE_URL = os.environ.get("AFFILIATE_URL", "REPLACE_WITH_YOUR_AFFILIATE_LINK")
 PLATFORM_NAME = os.environ.get("PLATFORM_NAME", "Shahid")
 LANGUAGE = "ar-EG"
-MAX_ITEMS = 24  # أقصى عدد أفلام هيفضل ظاهر في السايت (الأقدم بيتشال تلقائيًا)
+MAX_ITEMS = 36  # أقصى عدد أفلام/مسلسلات هيفضل ظاهر في السايت (الأقدم بيتشال تلقائيًا)
 
 BASE = "https://api.themoviedb.org/3"
 DEFAULT_PLATFORM = {"name": PLATFORM_NAME, "affiliate_url": AFFILIATE_URL}
@@ -55,16 +55,53 @@ def fetch_details(tmdb_id, kind):
     }
 
 
+def _pull(path, extra_params=None, kind="فيلم", seen=None, bucket=None):
+    params = {"api_key": API_KEY, "language": LANGUAGE, "page": 1}
+    if extra_params:
+        params.update(extra_params)
+    r = requests.get(f"{BASE}/{path}", params=params)
+    if r.ok:
+        for item in r.json().get("results", []):
+            key = (kind, item["id"])
+            if key not in seen:
+                seen.add(key)
+                bucket.append(key)
+
+
 def discover_ids():
-    """يجيب مجموعة أرقام أفلام من Trending + Upcoming بدون تكرار"""
-    ids = []
-    for path in ["trending/movie/week", "movie/upcoming", "movie/popular"]:
-        r = requests.get(f"{BASE}/{path}", params={"api_key": API_KEY, "language": LANGUAGE, "page": 1})
-        if r.ok:
-            for item in r.json().get("results", []):
-                if item["id"] not in ids:
-                    ids.append(item["id"])
-    return ids[:MAX_ITEMS]
+    """يجيب مجموعة (id, kind) من Trending/Upcoming/Popular عالميًا + محتوى مصري/عربي مخصص"""
+    movie_paths = ["trending/movie/week", "movie/upcoming", "movie/popular"]
+    tv_paths = ["trending/tv/week", "tv/popular", "tv/on_the_air"]
+
+    movie_pairs, tv_pairs = [], []
+    seen = set()
+
+    # محتوى مصري بالتحديد (منشأ مصر) - أولوية عشان محتوى مصري ما يتزحلقش برة السقف
+    _pull("discover/movie", {"with_origin_country": "EG", "sort_by": "popularity.desc"},
+          kind="فيلم", seen=seen, bucket=movie_pairs)
+    _pull("discover/tv", {"with_origin_country": "EG", "sort_by": "popularity.desc"},
+          kind="مسلسل", seen=seen, bucket=tv_pairs)
+
+    # محتوى عربي بشكل عام (لغة أصلية عربي) كتغطية إضافية
+    _pull("discover/movie", {"with_original_language": "ar", "sort_by": "popularity.desc"},
+          kind="فيلم", seen=seen, bucket=movie_pairs)
+    _pull("discover/tv", {"with_original_language": "ar", "sort_by": "popularity.desc"},
+          kind="مسلسل", seen=seen, bucket=tv_pairs)
+
+    # بعدين نكمل بالأجانب الرائجة عالميًا
+    for path in movie_paths:
+        _pull(path, kind="فيلم", seen=seen, bucket=movie_pairs)
+    for path in tv_paths:
+        _pull(path, kind="مسلسل", seen=seen, bucket=tv_pairs)
+
+    # نتبادل فيلم/مسلسل عشان النوعين يفضلوا موجودين حتى لو في سقف للعدد
+    pairs = []
+    for a, b in zip(movie_pairs, tv_pairs):
+        pairs.append(a)
+        pairs.append(b)
+    pairs += movie_pairs[len(tv_pairs):] + tv_pairs[len(movie_pairs):]
+
+    return pairs[:MAX_ITEMS]
 
 
 def main():
@@ -73,10 +110,10 @@ def main():
         return
 
     results = []
-    for tmdb_id in discover_ids():
+    for kind, tmdb_id in discover_ids():
         try:
-            results.append(fetch_details(tmdb_id, "فيلم"))
-            print("✓", results[-1]["title"])
+            results.append(fetch_details(tmdb_id, kind))
+            print("✓", results[-1]["type"], "-", results[-1]["title"])
         except Exception as e:
             print("✗ فشل استيراد", tmdb_id, "-", e)
 
