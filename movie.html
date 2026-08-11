@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">ARBFLIX</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23E8B34D'/%3E%3Cpolygon points='40,30 40,70 72,50' fill='%231A1200'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#0B0E16; --card:#161A26; --card-2:#1B2030; --gold:#E8B34D; --gold-dim:#8A6A2E; --text:#ECE9E2; --text-dim:#8B8FA3; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--bg); color:var(--text); font-family:'Tajawal', sans-serif; overflow-x:hidden; }
+  .display{ font-family:'Lalezar', sans-serif; letter-spacing:.5px; }
+  body::before{ content:''; position:fixed; top:-20%; right:-10%; width:60vw; height:60vw;
+    background:radial-gradient(circle, rgba(58,46,82,0.35) 0%, transparent 65%); pointer-events:none; z-index:0; }
+  body::after{ content:''; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.035; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .progress-bar{ position:fixed; top:0; left:0; height:2.5px; background:linear-gradient(90deg,var(--gold),#F5C568);
+    z-index:200; width:30%; transition:width .4s ease, opacity .3s ease .2s; box-shadow:0 0 8px rgba(232,179,77,.6); }
+  nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 5vw;
+    background:rgba(11,14,22,0.85); backdrop-filter:blur(10px); border-bottom:1px solid #1E2333; position:sticky; top:0; z-index:30; }
+  .logo-mark{ display:flex; align-items:center; text-decoration:none; position:relative; overflow:hidden; }
+  .logo-mark .word{ font-family:'Lalezar', sans-serif; font-size:21px; letter-spacing:.5px; color:var(--text); position:relative; }
+  .logo-mark .word b{ color:var(--gold); font-weight:400; position:relative; }
+  .logo-mark .word b::after{ content:''; position:absolute; left:0; right:0; bottom:-3px; height:2px; background:var(--gold);
+    transform:scaleX(0); transform-origin:right; animation:underline-in 1s .4s cubic-bezier(.2,.8,.2,1) forwards; }
+  .logo-mark .word::before{ content:''; position:absolute; top:0; left:-120%; width:60%; height:100%;
+    background:linear-gradient(115deg, transparent, rgba(232,179,77,.55), transparent);
+    animation:logo-sheen 3.2s ease-in-out .6s infinite; pointer-events:none; }
+  @keyframes underline-in{ to{ transform:scaleX(1); } }
+  @keyframes logo-sheen{ 0%{ left:-120%; } 35%{ left:130%; } 100%{ left:130%; } }
+  .back{ width:38px; height:38px; border-radius:50%; background:var(--card-2); display:flex; align-items:center; justify-content:center;
+    border:1px solid #262D42; cursor:pointer; }
+  .back svg{ width:17px; height:17px; stroke:var(--text); }
+  .crumb{ padding:14px 5vw; font-size:12.5px; color:var(--text-dim); position:relative; z-index:1;}
+  .crumb b{ color:var(--gold); font-weight:500; }
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .backdrop{ position:absolute; top:0; left:0; right:0; height:340px; z-index:0; overflow:hidden; }
+  .backdrop img{ width:100%; height:100%; object-fit:cover; filter:blur(18px) brightness(.55) saturate(1.2); transform:scale(1.15); }
+  .backdrop::after{ content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(11,14,22,.2) 0%, var(--bg) 92%); }
+  .poster-wrap{ padding:0 5vw; position:relative; z-index:1; }
+  .poster{ width:100%; max-width:420px; margin:0 auto; display:block; border-radius:14px;
+    aspect-ratio:2/3; background:linear-gradient(160deg,#3A2E52,#161A26 75%);
+    box-shadow:0 25px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(232,179,77,0.08); position:relative; overflow:hidden; }
+  .poster img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .poster .sheen{ position:absolute; inset:0; background:linear-gradient(115deg, transparent 20%, rgba(255,255,255,.08) 35%, transparent 50%);
+    background-size:200% 200%; animation:sheen 5s ease-in-out infinite; pointer-events:none; }
+  @keyframes sheen{ 0%{ background-position:200% 0; } 100%{ background-position:-50% 0; } }
+  .poster .glyph{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:64px; opacity:.2;}
+  .poster .titletag{ position:absolute; bottom:0; left:0; right:0; padding:22px 16px;
+    background:linear-gradient(to top, rgba(0,0,0,.92), transparent); text-align:center;}
+  .poster .titletag .en{ font-size:22px; font-weight:900; color:var(--text); }
+  .poster .titletag .yr{ color:var(--gold); font-size:13px; }
+  .rating-ring{ position:absolute; top:14px; left:14px; width:52px; height:52px; z-index:2; }
+  .rating-ring svg{ transform:rotate(-90deg); position:absolute; inset:0; }
+  .rating-ring circle{ fill:none; stroke-width:4; }
+  .rating-ring .bg{ stroke:rgba(255,255,255,0.12); }
+  .rating-ring .fg{ stroke:var(--gold); stroke-linecap:round; stroke-dasharray:150.8; stroke-dashoffset:150.8;
+    transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1) .3s; }
+  .rating-ring .num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:900; color:var(--gold); background:rgba(11,14,22,.55); border-radius:50%; margin:6px; }
+
+  .title-block{ padding:22px 5vw 4px; position:relative; z-index:1; text-align:center; }
+  .title-block h1{ font-size:26px; line-height:1.3; }
+  .title-block .title-ar{ color:var(--text-dim); font-size:14px; margin-top:4px; }
+  .meta-chips{ display:flex; justify-content:center; gap:8px; margin-top:14px; flex-wrap:wrap; }
+  .mchip{ background:var(--card); border:1px solid #232A3D; color:var(--text-dim); font-size:12px;
+    padding:5px 14px; border-radius:16px; }
+  .section{ padding:28px 5vw; position:relative; z-index:1; }
+  .section h2{ display:flex; align-items:center; gap:8px; font-size:20px; color:var(--gold); margin-bottom:14px; }
+  .section h2 .bar{ width:4px; height:20px; background:var(--gold); border-radius:2px; }
+  .story-box{ background:var(--card); border-radius:12px; padding:20px; line-height:2; color:var(--text-dim); font-size:15px; border:1px solid #1E2333; }
+  .details-table{ background:var(--card); border-radius:12px; overflow:hidden; border:1px solid #1E2333; }
+  .details-table .row{ display:flex; justify-content:space-between; padding:16px 18px; border-bottom:1px solid #232A3D; font-size:14px; transition:background .2s; }
+  .details-table .row:hover{ background:#1A2032; }
+  .details-table .row:last-child{ border-bottom:none; }
+  .details-table .label{ color:var(--text-dim); }
+  .details-table .value{ color:var(--text); font-weight:500; }
+  .cta-wrap{ padding:8px 5vw 4px; display:flex; flex-direction:column; gap:12px; position:relative; z-index:1; }
+  .ticket-btn{ position:relative; display:flex; align-items:center; justify-content:center; gap:12px; width:100%;
+    background:var(--gold); color:#1A1200; border:none; cursor:pointer; font-family:'Tajawal',sans-serif; font-weight:900;
+    font-size:17px; padding:20px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 92%, 2% 84%, 0% 76%, 2% 68%, 0% 60%, 2% 52%, 0% 44%, 2% 36%, 0% 28%, 2% 20%, 0% 12%);
+    text-decoration:none; transition:transform .15s, box-shadow .3s, background .2s; animation:pulse 2.6s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ box-shadow:0 8px 24px rgba(232,179,77,0.15); } 50%{ box-shadow:0 8px 34px rgba(232,179,77,0.4); } }
+  .ticket-btn .plat{ font-size:12px; font-weight:500; opacity:.8; }
+  .ticket-btn:hover{ background:#F5C568; transform:translateY(-2px); }
+  .ticket-btn.secondary{ background:var(--card-2); color:var(--text); clip-path:none; border-radius:10px; animation:none; border:1px solid #262D42; }
+  .ticket-btn.secondary:hover{ background:#242B40; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(120px,1fr)); gap:16px; }
+  .mini-card{ aspect-ratio:2/3; border-radius:10px; overflow:hidden; position:relative; background:var(--card); cursor:pointer; transition:transform .25s, box-shadow .25s; }
+  .mini-card::before{ content:''; position:absolute; inset:0; background:linear-gradient(160deg, var(--a,#3A2E52), #161A26 75%); }
+  .mini-card img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .mini-card:hover{ transform:translateY(-6px) scale(1.05); box-shadow:0 16px 30px rgba(0,0,0,0.5), 0 0 0 2px var(--gold); z-index:2; }
+  .mini-card .lbl{ position:absolute; bottom:0; left:0; right:0; padding:8px; font-size:11px; background:linear-gradient(to top, rgba(0,0,0,.9), transparent); font-weight:700; }
+  .no-match{ text-align:center; padding:60px 5vw; color:var(--text-dim); }
+  .no-match a{ color:var(--gold); }
+  footer{ padding:70px 5vw 40px; text-align:center; color:var(--text-dim); font-size:12px; border-top:1px solid #1E2333; margin-top:20px; position:relative; z-index:1; }
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav>
+  <a href="index.html" class="logo-mark">
+    <span class="word">arb<b>flix</b></span>
+  </a>
+  <div class="back" onclick="history.length>1 ? history.back() : location.href='index.html'">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
+</nav>
+
+<div id="content" style="position:relative;"></div>
+<footer>ARBFLIX — كل الروابط توجّه لمنصات مرخصة فقط</footer>
+
+<script>
+  const pbar = document.getElementById('progressBar');
+  window.addEventListener('load', ()=>{ pbar.style.width='100%'; setTimeout(()=>{ pbar.style.opacity='0'; }, 250); });
+
+  const palette = ['#3A2E52','#4A2B2B','#2B4A3E','#4A3B1E','#2B3A4A','#3E2B4A','#2B3A2B','#4A2B3E'];
+  const FALLBACK = [
+    {"id":"outer-threat-2026","title":"التهديد الخارجي","type":"فيلم","year":2026,"rating":8.4,"genre":"خيال علمي","poster_path":null,"overview":"عمل مغامرات وخيال علمي.","platforms":[{"name":"Shahid","affiliate_url":"#"}]},
+  ];
+
+  function posterImg(item){
+    if(item.poster_path) return `<img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${item.title}">`;
+    return `<div class="glyph">🎬</div>`;
+  }
+
+  async function load(){
+    let ALL;
+    try{
+      const res = await fetch('movies-data.json', {cache:'no-store'});
+      if(!res.ok) throw new Error();
+      ALL = await res.json();
+    }catch(e){ ALL = FALLBACK; }
+
+    const params = new URLSearchParams(location.search);
+    const wanted = params.get('id');
+    const movie = ALL.find(m=> m.id === wanted) || ALL[0];
+    const content = document.getElementById('content');
+
+    if(!movie){
+      content.innerHTML = `<div class="no-match">مفيش بيانات لعرضها. <a href="index.html">رجوع للرئيسية</a></div>`;
+      return;
+    }
+
+    document.getElementById('pageTitle').textContent = movie.title + ' — ARBFLIX';
+
+    const platformsHtml = movie.platforms.map((p,i)=>{
+      const cls = i===0 ? 'ticket-btn' : 'ticket-btn secondary';
+      const label = i===0 ? `مشاهدة الآن <span class="plat">على ${p.name}</span>` : `متوفر أيضًا على ${p.name}`;
+      return `<a href="${p.affiliate_url}" class="${cls}" data-affiliate-slot="${p.name.toLowerCase()}">${label}</a>`;
+    }).join('');
+
+    content.innerHTML = `
+      <div class="backdrop">${movie.poster_path ? `<img src="https://image.tmdb.org/t/p/w780${movie.poster_path}" alt="">` : ''}</div>
+      <div class="crumb">ARBFLIX ‹ ${movie.type === 'فيلم' ? 'أفلام' : 'مسلسلات'} ‹ <b>${movie.title}</b></div>
+      <div class="poster-wrap reveal" style="padding-top:24px;">
+        <div class="poster">
+          ${posterImg(movie)}
+          <div class="sheen"></div>
+          <div class="rating-ring">
+            <svg width="52" height="52"><circle class="bg" cx="26" cy="26" r="24"/><circle class="fg" id="ringFg" cx="26" cy="26" r="24"/></svg>
+            <div class="num">${movie.rating}</div>
+          </div>
+        </div>
+      </div>
+      <div class="title-block reveal">
+        <h1 class="display">${movie.title}</h1>
+        ${movie.title_ar && movie.title_ar !== movie.title ? `<div class="title-ar">${movie.title_ar}</div>` : ''}
+        <div class="meta-chips">
+          <span class="mchip">${movie.type}</span>
+          <span class="mchip">${movie.genre}</span>
+          <span class="mchip">${movie.year||''}</span>
+        </div>
+      </div>
+      <div class="section reveal">
+        <h2><span class="bar"></span> القصة</h2>
+        <div class="story-box">${movie.overview || 'لا يوجد وصف متاح حاليًا.'}</div>
+      </div>
+      <div class="section reveal">
+        <h2><span class="bar"></span> تفاصيل العمل</h2>
+        <div class="details-table">
+          <div class="row"><span class="value">${movie.type}</span><span class="label">التصنيف</span></div>
+          <div class="row"><span class="value">${movie.genre}</span><span class="label">النوع</span></div>
+          <div class="row"><span class="value">${movie.year||'—'}</span><span class="label">سنة الإصدار</span></div>
+          <div class="row"><span class="value">★ ${movie.rating} / 10</span><span class="label">التقييم</span></div>
+          <div class="row"><span class="value">${movie.platforms.map(p=>p.name).join(' · ')}</span><span class="label">متوفر على</span></div>
+        </div>
+      </div>
+      <div class="cta-wrap reveal">${platformsHtml}</div>
+      <div class="section reveal">
+        <h2><span class="bar"></span> يعجبك أيضًا</h2>
+        <div class="grid" id="related"></div>
+      </div>
+    `;
+
+    requestAnimationFrame(()=> setTimeout(()=>{
+      const ring = document.getElementById('ringFg');
+      if(ring) ring.style.strokeDashoffset = 150.8 * (1 - (movie.rating/10));
+    }, 300));
+
+    const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); }, {threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    const related = document.getElementById('related');
+    ALL.filter(m=> m.genre===movie.genre && m.id!==movie.id).slice(0,6).forEach((m,i)=>{
+      const c = document.createElement('div'); c.className='mini-card'; c.style.setProperty('--a', palette[i%palette.length]);
+      c.innerHTML = `${posterImg(m)}<div class="lbl">${m.title}</div>`;
+      c.onclick = ()=>{ location.href = 'movie.html?id=' + encodeURIComponent(m.id); };
+      related.appendChild(c);
+    });
+  }
+  load();
+</script>
+</body>
+</html>

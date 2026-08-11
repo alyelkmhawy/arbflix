@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARBFLIX — دليلك لمشاهدة الأفلام والمسلسلات</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23E8B34D'/%3E%3Cpolygon points='40,30 40,70 72,50' fill='%231A1200'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0E16; --card:#161A26; --card-2:#1B2030;
+    --gold:#E8B34D; --gold-dim:#8A6A2E; --text:#ECE9E2; --text-dim:#8B8FA3;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--bg); color:var(--text); font-family:'Tajawal', sans-serif; overflow-x:hidden; padding-bottom:76px; }
+  .display{ font-family:'Lalezar', sans-serif; letter-spacing:.5px; }
+  ::-webkit-scrollbar{ display:none; }
+
+  body::before{ content:''; position:fixed; top:-15%; right:-10%; width:60vw; height:60vw;
+    background:radial-gradient(circle, rgba(58,46,82,0.3) 0%, transparent 65%); pointer-events:none; z-index:0; }
+  body::after{ content:''; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.035; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .progress-bar{ position:fixed; top:0; left:0; height:2.5px; background:linear-gradient(90deg,var(--gold),#F5C568);
+    z-index:200; width:0%; transition:width .4s ease, opacity .3s ease .2s; box-shadow:0 0 8px rgba(232,179,77,.6); }
+
+  nav.top{ display:flex; align-items:center; justify-content:space-between; padding:16px 5vw;
+    background:rgba(11,14,22,0.85); backdrop-filter:blur(10px); position:sticky; top:0; z-index:30;
+    border-bottom:1px solid #1E2333; transition:box-shadow .3s;}
+  nav.top.scrolled{ box-shadow:0 8px 24px rgba(0,0,0,0.4); }
+  .logo-mark{ display:flex; align-items:center; text-decoration:none; position:relative; overflow:hidden; }
+  .logo-mark .word{ font-family:'Lalezar', sans-serif; font-size:24px; letter-spacing:.5px; color:var(--text); position:relative; }
+  .logo-mark .word b{ color:var(--gold); font-weight:400; position:relative; }
+  .logo-mark .word b::after{ content:''; position:absolute; left:0; right:0; bottom:-3px; height:2px; background:var(--gold);
+    transform:scaleX(0); transform-origin:right; animation:underline-in 1s .4s cubic-bezier(.2,.8,.2,1) forwards; }
+  .logo-mark .word::before{ content:''; position:absolute; top:0; left:-120%; width:60%; height:100%;
+    background:linear-gradient(115deg, transparent, rgba(232,179,77,.55), transparent);
+    animation:logo-sheen 3.2s ease-in-out .6s infinite; pointer-events:none; }
+  @keyframes underline-in{ to{ transform:scaleX(1); } }
+  @keyframes logo-sheen{ 0%{ left:-120%; } 35%{ left:130%; } 100%{ left:130%; } }
+  .search-icon{ width:40px; height:40px; border-radius:50%; background:var(--card-2); display:flex; align-items:center; justify-content:center;
+    border:1px solid #262D42; cursor:pointer; transition:border-color .2s, transform .15s; }
+  .search-icon:hover{ border-color:var(--gold-dim); transform:scale(1.05); }
+  .search-icon svg{ width:18px; height:18px; stroke:var(--text); }
+
+  .search-overlay{ position:fixed; inset:0; background:rgba(6,7,11,0.97); backdrop-filter:blur(6px); z-index:100;
+    display:flex; flex-direction:column; padding:5vw; transform:translateY(-100%); transition:transform .35s cubic-bezier(.2,.9,.3,1); }
+  .search-overlay.open{ transform:translateY(0); }
+  .search-overlay .bar{ display:flex; gap:10px; align-items:center; background:var(--card); border:1px solid #262D42;
+    border-radius:14px; padding:14px 16px; }
+  .search-overlay input{ flex:1; background:none; border:none; outline:none; color:var(--text); font-family:'Tajawal'; font-size:16px; }
+  .search-overlay .close{ color:var(--text-dim); font-size:22px; cursor:pointer; padding:4px 8px; }
+  .search-results{ margin-top:20px; display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:14px; overflow-y:auto; }
+  .search-empty{ color:var(--text-dim); text-align:center; margin-top:40px; font-size:14px; }
+
+  .chips{ display:flex; gap:10px; padding:16px 5vw; overflow-x:auto; position:relative; z-index:1; }
+  .chip{ flex:0 0 auto; padding:8px 18px; border-radius:20px; font-size:13px; white-space:nowrap; cursor:pointer;
+    border:1px solid #262D42; color:var(--text-dim); transition:all .2s; }
+  .chip.active{ background:var(--gold); color:#1A1200; border-color:var(--gold); font-weight:700; }
+  .chip:not(.active):hover{ border-color:var(--gold-dim); color:var(--text); }
+
+  .hero{ position:relative; padding:0 5vw; z-index:1; }
+  .hero-track{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:14px; border-radius:16px; }
+  .hero-slide{ flex:0 0 100%; scroll-snap-align:start; position:relative; border-radius:16px; overflow:hidden;
+    aspect-ratio:16/10; background:linear-gradient(135deg, var(--a,#241A38), #0B0E16 70%); }
+  .hero-slide img.bgimg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.55; }
+  .hero-slide .sheen{ position:absolute; inset:0; background:linear-gradient(115deg, transparent 20%, rgba(255,255,255,.06) 35%, transparent 50%);
+    background-size:200% 200%; animation:sheen 6s ease-in-out infinite; }
+  @keyframes sheen{ 0%{background-position:200% 0;} 100%{background-position:-50% 0;} }
+  .hero-slide .content{ position:absolute; bottom:0; left:0; right:0; padding:24px 20px;
+    background:linear-gradient(to top, rgba(0,0,0,.9), transparent 70%); }
+  .hero-slide .badge-row{ display:flex; gap:8px; margin-bottom:10px; }
+  .platform-chip{ background:rgba(232,179,77,0.14); color:var(--gold); border:1px solid var(--gold-dim);
+    padding:3px 10px; border-radius:14px; font-size:11px; font-weight:700; }
+  .hero-slide h1{ font-size:26px; margin-bottom:8px; }
+  .hero-slide p{ font-size:12.5px; color:var(--text-dim); max-width:90%; margin-bottom:14px; line-height:1.7;}
+  .dots{ display:flex; justify-content:center; gap:6px; margin-top:12px; }
+  .dot{ width:6px; height:6px; border-radius:50%; background:#2C3348; transition:all .3s; }
+  .dot.active{ width:20px; border-radius:4px; background:var(--gold); }
+
+  .mini-ticket{ display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:#1A1200;
+    font-weight:900; font-size:13px; padding:10px 20px; border-radius:8px; text-decoration:none;
+    box-shadow:0 6px 18px rgba(232,179,77,0.25); }
+
+  .rail{ padding:26px 0 6px; position:relative; z-index:1; }
+  .rail-head{ display:flex; justify-content:space-between; align-items:baseline; padding:0 5vw; margin-bottom:14px; }
+  .rail-head h2{ font-size:19px; display:flex; align-items:center; gap:8px; }
+  .rail-head .bar{ width:4px; height:16px; background:var(--gold); border-radius:2px; display:inline-block; }
+  .rail-head span.more{ color:var(--text-dim); font-size:12px; }
+  .rail-track{ display:flex; gap:14px; overflow-x:auto; padding:4px 5vw 10px; scroll-snap-type:x proximity; }
+
+  .poster-card{ flex:0 0 128px; scroll-snap-align:start; position:relative; aspect-ratio:2/3; border-radius:10px;
+    overflow:hidden; cursor:pointer; background:var(--card); transition:transform .25s, box-shadow .25s; }
+  .poster-card::before{ content:''; position:absolute; inset:0; background:linear-gradient(160deg, var(--a,#3A2E52), #161A26 75%); }
+  .poster-card img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .poster-card .glyph{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:34px; opacity:.22;}
+  .poster-card .badge{ position:absolute; top:8px; right:8px; background:rgba(0,0,0,.6); color:var(--gold);
+    font-size:10px; font-weight:800; padding:3px 7px; border-radius:6px; backdrop-filter:blur(4px); }
+  .poster-card .meta{ position:absolute; left:0; right:0; bottom:0; padding:10px 9px;
+    background:linear-gradient(to top, rgba(0,0,0,.92), transparent); }
+  .poster-card .meta .t{ font-size:12px; font-weight:700; line-height:1.3; }
+  .poster-card .meta .s{ font-size:10px; color:var(--gold); margin-top:2px; }
+  .poster-card:active{ transform:scale(.96); }
+  .poster-card .hover-fx{ position:absolute; inset:0; background:rgba(11,14,22,.55); opacity:0;
+    display:flex; align-items:center; justify-content:center; transition:opacity .25s; z-index:2; }
+  .poster-card .hover-fx svg{ width:38px; height:38px; transform:scale(.6); transition:transform .3s cubic-bezier(.2,.9,.3,1.4); }
+  .poster-card.fx-on .hover-fx{ opacity:1; }
+  .poster-card.fx-on .hover-fx svg{ transform:scale(1); }
+  @media (hover:hover){
+    .poster-card:hover{ transform:translateY(-6px) scale(1.05); box-shadow:0 18px 34px rgba(0,0,0,.5), 0 0 0 2px var(--gold); z-index:3; }
+    .poster-card:hover .hover-fx{ opacity:1; }
+    .poster-card:hover .hover-fx svg{ transform:scale(1); }
+  }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .55s ease, transform .55s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .vgrid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:0 5vw; }
+  .vcard{ position:relative; border-radius:12px; overflow:hidden; aspect-ratio:16/10; cursor:pointer;
+    background:var(--card); transition:transform .2s; }
+  .vcard::before{ content:''; position:absolute; inset:0; background:linear-gradient(150deg, var(--a,#3A2E52), #161A26 80%); }
+  .vcard img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .vcard .glyph{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:26px; opacity:.2; }
+  .vcard .ep-badge{ position:absolute; top:8px; right:8px; background:var(--gold); color:#1A1200; font-size:10px;
+    font-weight:900; padding:3px 8px; border-radius:6px; }
+  .vcard .meta{ position:absolute; left:0; right:0; bottom:0; padding:9px 10px;
+    background:linear-gradient(to top, rgba(0,0,0,.94), transparent); }
+  .vcard .meta .t{ font-size:11.5px; font-weight:700; line-height:1.3; }
+  .vcard .meta .s{ font-size:9.5px; color:var(--gold); margin-top:2px; }
+  .vcard:active{ transform:scale(.96); }
+
+  .empty-state{ text-align:center; padding:40px 5vw; color:var(--text-dim); font-size:13px; display:none; }
+
+  footer{ padding:40px 5vw; text-align:center; color:var(--text-dim); font-size:12px; border-top:1px solid #1E2333; margin-top:30px; position:relative; z-index:1; }
+
+  .tabbar{ position:fixed; bottom:0; left:0; right:0; z-index:50; display:flex; align-items:flex-end;
+    background:rgba(13,16,24,0.92); backdrop-filter:blur(14px); border-top:1px solid #1E2333; padding:8px 0 10px; height:66px; }
+  .tabbar .tab{ flex:1 1 0; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:5px;
+    color:var(--text-dim); font-size:10.5px; cursor:pointer; transition:color .2s, transform .15s; position:relative;
+    background:none; border:none; font-family:'Tajawal'; }
+  .tabbar .tab:active{ transform:scale(.92); }
+  .tabbar .tab.active{ color:var(--gold); }
+  .tabbar .tab.active .ic svg{ stroke:var(--gold); }
+  .tabbar .tab.active::after{ content:''; position:absolute; top:-8px; width:4px; height:4px; border-radius:50%; background:var(--gold); }
+  .tabbar .tab .ic{ display:flex; }
+  .tabbar .tab .ic svg{ width:22px; height:22px; stroke:var(--text-dim); fill:none; stroke-width:1.8; transition:stroke .2s; }
+  .tabbar .tab.center{ position:relative; }
+  .tabbar .tab.center .lbl{ font-family:'Lalezar', sans-serif; font-size:15px; letter-spacing:.3px; color:var(--text); position:relative; overflow:hidden; }
+  .tabbar .tab.center .lbl b{ color:var(--gold); font-weight:400; }
+  .tabbar .tab.center.active .lbl,
+  .tabbar .tab.center .lbl{ color:var(--text); }
+  .tabbar .tab.center .ic svg{ stroke:var(--text-dim); }
+  .tabbar .tab.center.active .ic svg{ stroke:var(--gold); }
+
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="top" id="topNav">
+  <a href="index.html" class="logo-mark">
+    <span class="word">arb<b>flix</b></span>
+  </a>
+  <div class="search-icon" onclick="openSearch()">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </div>
+</nav>
+
+<div class="chips" id="chips"></div>
+
+<div class="hero reveal">
+  <div class="hero-track" id="heroTrack"></div>
+  <div class="dots" id="heroDots"></div>
+</div>
+
+<div id="rails"></div>
+
+<div class="rail reveal">
+  <div class="rail-head"><h2><span class="bar"></span>أحدث الإضافات</h2><span class="more">عرض الكل ←</span></div>
+  <div class="vgrid" id="denseGrid"></div>
+  <div class="empty-state" id="emptyState">مفيش نتائج للتصنيف ده دلوقتي</div>
+</div>
+
+<footer>ARBFLIX — كل روابط المشاهدة توجّه لمنصات مرخصة فقط</footer>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="bar">
+    <span style="color:var(--text-dim)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </span>
+    <input id="searchInput" placeholder="ابحث عن فيلم أو مسلسل...">
+    <span class="close" onclick="closeSearch()">✕</span>
+  </div>
+  <div class="search-results" id="searchResults"></div>
+  <div class="search-empty" id="searchEmpty">اكتب اسم فيلم أو مسلسل للبحث</div>
+</div>
+
+<div class="tabbar">
+  <button class="tab active" onclick="scrollTo({top:0,behavior:'smooth'})">
+    <span class="ic"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+    الرئيسية
+  </button>
+  <button class="tab" onclick="filterByType('مسلسل')">
+    <span class="ic"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 3l4 3 4-3"/></svg></span>
+    مسلسلات
+  </button>
+  <div class="tab center" onclick="scrollTo({top:0,behavior:'smooth'})">
+    <span class="ic"><svg viewBox="0 0 24 24" stroke="var(--gold)" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="10,8 10,16 16,12" fill="var(--gold)" stroke="none"/></svg></span>
+    <span class="lbl">arb<b>flix</b></span>
+  </div>
+  <button class="tab" onclick="filterByType('فيلم')">
+    <span class="ic"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 3v18"/></svg></span>
+    أفلام
+  </button>
+  <button class="tab" onclick="openSearch()">
+    <span class="ic"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg></span>
+    القائمة
+  </button>
+</div>
+
+<script>
+  const pbar = document.getElementById('progressBar');
+  pbar.style.width='30%';
+  window.addEventListener('load', ()=>{ pbar.style.width='100%'; setTimeout(()=>{ pbar.style.opacity='0'; }, 250); });
+
+  const palette = ['#3A2E52','#4A2B2B','#2B4A3E','#4A3B1E','#2B3A4A','#3E2B4A','#2B3A2B','#4A2B3E'];
+
+  // fallback data used only if movies-data.json can't be fetched (e.g. opening the file
+  // directly from disk instead of through a real server / GitHub Pages)
+  const FALLBACK = [
+    {"id":"outer-threat-2026","title":"التهديد الخارجي","type":"فيلم","year":2026,"rating":8.4,"genre":"خيال علمي","poster_path":null,"overview":"عمل مغامرات وخيال علمي.","platforms":[{"name":"Shahid","affiliate_url":"#"}]},
+    {"id":"return-of-glory","title":"عودة المجد","type":"مسلسل","year":2026,"rating":8.9,"genre":"دراما تركية","poster_path":null,"overview":"دراما عائلية تركية.","platforms":[{"name":"Shahid","affiliate_url":"#"}]},
+  ];
+
+  let ALL = [];
+  let activeGenre = null;
+  let activeType = null;
+
+  function posterImg(item){
+    if(item.poster_path){
+      return `<img src="https://image.tmdb.org/t/p/w342${item.poster_path}" alt="${item.title}" loading="lazy">`;
+    }
+    return `<div class="glyph">🎬</div>`;
+  }
+
+  function makeCard(item,i){
+    const div = document.createElement('div');
+    div.className='poster-card';
+    div.style.setProperty('--a', palette[i % palette.length]);
+    div.innerHTML = `${posterImg(item)}<div class="badge">★ ${item.rating}</div>
+      <div class="hover-fx"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(11,14,22,.7)" stroke="var(--gold)" stroke-width="1.5"/><polygon points="10,8 10,16 16,12" fill="var(--gold)"/></svg></div>
+      <div class="meta"><div class="t">${item.title}</div><div class="s">${item.type} · ${item.genre}</div></div>`;
+    div.onclick = ()=>{ location.href = 'movie.html?id=' + encodeURIComponent(item.id); };
+    div.addEventListener('touchstart', ()=>{
+      document.querySelectorAll('.poster-card.fx-on').forEach(el=> el!==div && el.classList.remove('fx-on'));
+      div.classList.add('fx-on');
+    }, {passive:true});
+    return div;
+  }
+
+  function makeVCard(item,i){
+    const c = document.createElement('div');
+    c.className='vcard';
+    c.style.setProperty('--a', palette[i % palette.length]);
+    c.innerHTML = `${posterImg(item)}<div class="ep-badge">${item.type}</div>
+      <div class="meta"><div class="t">${item.title}</div><div class="s">${item.genre} · ★ ${item.rating}</div></div>`;
+    c.onclick = ()=>{ location.href = 'movie.html?id=' + encodeURIComponent(item.id); };
+    return c;
+  }
+
+  function renderHero(list){
+    const heroTrack = document.getElementById('heroTrack');
+    const heroDots = document.getElementById('heroDots');
+    heroTrack.innerHTML=''; heroDots.innerHTML='';
+    list.slice(0,5).forEach((item,i)=>{
+      const s = document.createElement('div');
+      s.className='hero-slide';
+      s.style.setProperty('--a', palette[i]);
+      const bg = item.poster_path ? `<img class="bgimg" src="https://image.tmdb.org/t/p/w780${item.poster_path}" alt="">` : '';
+      s.innerHTML = `${bg}<div class="sheen"></div>
+        <div class="content">
+          <div class="badge-row"><span class="platform-chip">${item.platforms[0].name}</span><span class="platform-chip">★ ${item.rating}</span></div>
+          <h1 class="display">${item.title}</h1>
+          <p>${(item.overview||'').slice(0,90)}${item.overview && item.overview.length>90 ? '…':''}</p>
+          <a href="movie.html?id=${encodeURIComponent(item.id)}" class="mini-ticket">مشاهدة الآن</a>
+        </div>`;
+      heroTrack.appendChild(s);
+      const d = document.createElement('div'); d.className='dot'+(i===0?' active':'');
+      d.onclick = ()=> heroTrack.scrollTo({left: i*heroTrack.clientWidth, behavior:'smooth'});
+      heroDots.appendChild(d);
+    });
+    heroTrack.onscroll = ()=>{
+      const idx = Math.round(heroTrack.scrollLeft / heroTrack.clientWidth);
+      document.querySelectorAll('.dot').forEach((d,i)=> d.classList.toggle('active', i===idx));
+    };
+  }
+
+  function renderChips(genres){
+    const chips = document.getElementById('chips');
+    chips.innerHTML='';
+    const all = [{label:'الكل', value:null}, ...genres.map(g=>({label:g, value:g}))];
+    all.forEach(g=>{
+      const c = document.createElement('div');
+      c.className = 'chip' + (g.value===activeGenre ? ' active':'');
+      c.textContent = g.label;
+      c.onclick = ()=>{ activeGenre = g.value; renderAll(); };
+      chips.appendChild(c);
+    });
+  }
+
+  function filterByType(type){
+    activeType = (activeType === type) ? null : type;
+    renderAll();
+    scrollTo({top: document.getElementById('rails').offsetTop - 80, behavior:'smooth'});
+  }
+
+  function currentList(){
+    return ALL.filter(item=>
+      (!activeGenre || item.genre === activeGenre) &&
+      (!activeType || item.type === activeType)
+    );
+  }
+
+  function renderRails(){
+    const railsWrap = document.getElementById('rails');
+    railsWrap.innerHTML='';
+    const list = currentList();
+    const genres = [...new Set(list.map(i=>i.genre))];
+    const railDefs = [
+      ['أحدث الأفلام', list.filter(t=>t.type==='فيلم')],
+      ['أحدث المسلسلات', list.filter(t=>t.type==='مسلسل')],
+      ['الأعلى تقييمًا', [...list].sort((a,b)=>b.rating-a.rating)],
+    ];
+    let any = false;
+    railDefs.forEach(([label, items])=>{
+      if(!items.length) return;
+      any = true;
+      const sec = document.createElement('div');
+      sec.className='rail reveal in';
+      sec.innerHTML = `<div class="rail-head"><h2><span class="bar"></span>${label}</h2><span class="more">عرض الكل ←</span></div>
+        <div class="rail-track"></div>`;
+      railsWrap.appendChild(sec);
+      const track = sec.querySelector('.rail-track');
+      items.forEach((item,i)=> track.appendChild(makeCard(item,i)));
+    });
+    document.getElementById('emptyState').style.display = any ? 'none':'block';
+  }
+
+  function renderDenseGrid(){
+    const denseGrid = document.getElementById('denseGrid');
+    denseGrid.innerHTML='';
+    currentList().forEach((item,i)=> denseGrid.appendChild(makeVCard(item,i)));
+  }
+
+  function renderAll(){
+    renderChips([...new Set(ALL.map(i=>i.genre))]);
+    renderRails();
+    renderDenseGrid();
+  }
+
+  async function init(){
+    try{
+      const res = await fetch('movies-data.json', {cache:'no-store'});
+      if(!res.ok) throw new Error('no json');
+      ALL = await res.json();
+    }catch(e){
+      ALL = FALLBACK; // local file:// preview fallback
+    }
+    renderHero(ALL);
+    renderAll();
+
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:.1});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  }
+  init();
+
+  window.addEventListener('scroll', ()=>{
+    document.getElementById('topNav').classList.toggle('scrolled', window.scrollY>10);
+  });
+
+  const overlay = document.getElementById('searchOverlay');
+  const input = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
+  const empty = document.getElementById('searchEmpty');
+  function openSearch(){ overlay.classList.add('open'); setTimeout(()=>input.focus(),300); }
+  function closeSearch(){ overlay.classList.remove('open'); input.value=''; renderSearch(); }
+  function renderSearch(){
+    const q = input.value.trim();
+    results.innerHTML='';
+    if(!q){ empty.style.display='block'; empty.textContent='اكتب اسم فيلم أو مسلسل للبحث'; return; }
+    const found = ALL.filter(item=> item.title.includes(q) || (item.title_en||'').toLowerCase().includes(q.toLowerCase()));
+    empty.style.display = found.length? 'none':'block';
+    if(!found.length){ empty.textContent = 'مفيش نتائج لـ "'+q+'"'; }
+    found.forEach((item,i)=> results.appendChild(makeCard(item,i)));
+  }
+  input.addEventListener('input', renderSearch);
+</script>
+
+</body>
+</html>
