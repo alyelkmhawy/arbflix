@@ -1,23 +1,5 @@
 [
   {
-    "id": "avengers-doomsday-1003596",
-    "title": "Avengers: Doomsday",
-    "title_ar": "المنتقمون: يوم القيامة",
-    "type": "فيلم",
-    "year": 2026,
-    "rating": 0.0,
-    "genre": "خيال علمي",
-    "poster_path": "/bSkYB5VNl2tas9SKjXMUtE2gBPG.jpg",
-    "overview": "أبطال محبوبون من ثلاثة أكوان مختلفة يُدفعون نحو صدام مميت، ويواجهون تهديدًا مرعبًا قد يمحو وجودهم بالكامل… شيء يفوق كل ما عرفوه من قبل.",
-    "trailer_key": null,
-    "platforms": [
-      {
-        "name": "Shahid",
-        "affiliate_url": "REPLACE_WITH_YOUR_AFFILIATE_LINK"
-      }
-    ]
-  },
-  {
     "id": "spider-man-brand-new-day-969681",
     "title": "Spider-Man: Brand New Day",
     "title_ar": "سبايدر-مان: يوم جديد",
@@ -30,80 +12,638 @@
     "trailer_key": "TT8MVDxrLaI",
     "platforms": [
       {
-        "name": "Shahid",
-        "affiliate_url": "REPLACE_WITH_YOUR_AFFILIATE_LINK"
+        "name": "",
+        "affiliate_url": ""
       }
     ]
   },
   {
-    "id": "zootopia-2-1084242",
-    "title": "Zootopia 2",
-    "title_ar": "زوتروبوليس ٢",
-    "type": "فيلم",
-    "year": 2025,
-    "rating": 7.7,
-    "genre": "رسوم متحركة",
-    "poster_path": "/qL1MBO7f8V7jXSB46SgpetwqNaV.jpg",
-    "overview": "ينطلق المحققان جودي وتيك في مطاردة مشوّقة بعدما يصل إلى زوتروبوليس زاحف غامض يُحدث فوضى عارمة ويقلب عالم الثدييات رأسًا على عقب.",
-    "trailer_key": "H-FasIZClxk",
+    "id": "house-of-the-dragon-94997",
+    "title": "House of the Dragon",
+    "title_ar": "آل التنين",
+    "type": "مسلسل",
+    "year": 2022,
+    "rating": 8.4,
+    "genre": "خيال علمي وفانتازيا",
+    "poster_path": "/3cV7NLkN8WY5LECzLxI73PXE5Oq.jpg",
+    "overview": "تدور الأحداث قبل 200 عام من أحداث مسلسل صراع العروش. حيث سيركز على تفاصيل عائلة \"آل تارغيريان\" ولمحات هامة في تاريخ العائلة التي حكمت ويستروس منذ زمن بعيد، وصولًا إلى رقصة التنانين والصراعات الداخلية في العائلة التي دمرت كل شيء وهددت بانقراض التنانين للأبد.",
+    "trailer_key": "3-ehIXFUe04",
     "platforms": [
       {
-        "name": "Shahid",
-        "affiliate_url": "REPLACE_WITH_YOUR_AFFILIATE_LINK"
+        "name": "",
+        "affiliate_url": ""
       }
     ]
   },
   {
-    "id": "wicked-for-good-967941",
-    "title": "Wicked: For Good",
-    "title_ar": "شراً للخير",
+    "id": "spider-man-no-way-home-634649",
+    "title": "Spider-Man: No Way Home",
+    "title_ar": "الرجل العنكبوت: لا طريق للوطن",
     "type": "فيلم",
-    "year": 2025,
-    "rating": 6.6,
-    "genre": "فانتازيا",
-    "poster_path": "/w6XpICCriggWgCgpUKjztbSZFd2.jpg",
-    "overview": "القصة غير المروية لساحرات أوز.  يروي شرير قصة إلفابا ، ساحرة الغرب الشريرة المستقبلية وعلاقتها مع غليندا ، ساحرة الشمال الطيبة. الجزء الثاني من فيلم روائي طويل من جزأين مقتبس من مسرحية برودواي الموسيقية.",
-    "trailer_key": null,
+    "year": 2021,
+    "rating": 7.9,
+    "genre": "حركة",
+    "poster_path": "/2maUA8Y4kxJ9UtLHYDhf9FSTd7u.jpg",
+    "overview": "بعد أن كُشِفَت هوية سبايدرمان، يطلب بيتر المساعدة من دكتور سترينج. وعندما تسوء الأمور بسبب تعويذة، يبدأ أعداء خطرون من عوالم أخرى بالظهور.",
+    "trailer_key": "XT3PLKXSA3g",
     "platforms": [
       {
-        "name": "Shahid",
-        "affiliate_url": "REPLACE_WITH_YOUR_AFFILIATE_LINK"
+        "name": "",
+        "affiliate_url": ""
       }
     ]
   },
   {
-    "id": "dune-part-three-1170608",
-    "title": "Dune: Part Three",
-    "title_ar": "كثيب: القسم الثالث",
-    "type": "فيلم",
-    "year": 2026,
-    "rating": 0.0,
-    "genre": "خيال علمي",
-    "poster_path": "/d43fvHQsIMa4kpyhKXw0haEJIvI.jpg",
+    "id": "paradise-hotel-51025",
+    "title": "Paradise Hotel",
+    "title_ar": "Paradise Hotel",
+    "type": "مسلسل",
+    "year": 2005,
+    "rating": 5.6,
+    "genre": "واقع",
+    "poster_path": "/ycSBcACecVR0zSnP2ZF83k5f7he.jpg",
     "overview": "لا يوجد وصف متاح حاليًا.",
     "trailer_key": null,
     "platforms": [
       {
-        "name": "Shahid",
-        "affiliate_url": "REPLACE_WITH_YOUR_AFFILIATE_LINK"
+        "name": "",
+        "affiliate_url": ""
       }
     ]
   },
   {
-    "id": "toy-story-5-1084244",
-    "title": "Toy Story 5",
-    "title_ar": "حكاية لعبة ٥",
+    "id": "leviticus-1564614",
+    "title": "Leviticus",
+    "title_ar": "سفر اللاويين",
     "type": "فيلم",
     "year": 2026,
-    "rating": 7.4,
-    "genre": "رسوم متحركة",
-    "poster_path": "/b9yODva86tl5Em8cOoKSQQzzAy4.jpg",
-    "overview": "عندما تحصل \"بوني\" على جهاز \"ليلي باد\" اللوحي كهدية وتنجذب إليه بشكلٍ كبير، يجد \"وودي\" و\"باز\" و\"جيسي\" وبقية الألعاب أنفسهم أمام تحدٍ غير مسبوق، إذ تصبح مهمتهم في لفت انتباهها أصعب من أي وقت مضى، بينما يواجهون تهديدًا جديدًا يهدد عالم اللعب الذي اعتادوا عليه.",
-    "trailer_key": "jtzvhwiabrA",
+    "rating": 6.7,
+    "genre": "رعب",
+    "poster_path": "/nRxaDqD1X3ZoQbP3wGWS1VE9peC.jpg",
+    "overview": "يجب على مراهقين اثنين الهروب من كيان عنيف يتخذ هيئة الشخص الذي يرغب كلٌّ منهما فيه أكثر من أي شخص آخر — أي أحدهما الآخر.",
+    "trailer_key": null,
     "platforms": [
       {
-        "name": "Shahid",
-        "affiliate_url": "REPLACE_WITH_YOUR_AFFILIATE_LINK"
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "watch-what-happens-live-with-andy-cohen-22980",
+    "title": "Watch What Happens Live with Andy Cohen",
+    "title_ar": "Watch What Happens Live with Andy Cohen",
+    "type": "مسلسل",
+    "year": 2009,
+    "rating": 5.0,
+    "genre": "حوار",
+    "poster_path": "/onSD9UXfJwrMXWhq7UY7hGF2S1h.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "عائشة-لا-تستطيع-الطيران-1337148",
+    "title": "عائشة لا تستطيع الطيران",
+    "title_ar": "عائشة لا تستطيع الطيران",
+    "type": "فيلم",
+    "year": 2025,
+    "rating": 5.5,
+    "genre": "رعب",
+    "poster_path": "/HcfN1vNrz9FIQU64QQhslSLACo.jpg",
+    "overview": "عائشة، صومالية تبلغ من العمر 26 عامًا، تعيش وتعمل في حي عين شمس بالقاهرة، وهو حي يقطنه عدد كبير من المهاجرين الأفارقة. أدى تجاهل السلطات للتوترات العنيفة بين المصريين والجنسيات الأفريقية المختلفة إلى سيطرة عصابات مختلفة على الحي. وسرعان ما تفاقم الوضع بعد أن عرض أحد أفرادها على عائشة الأمن مقابل خدمة.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "رامز-مجنون-رسمي-102484",
+    "title": "رامز مجنون رسمي",
+    "title_ar": "رامز مجنون رسمي",
+    "type": "مسلسل",
+    "year": 2020,
+    "rating": 6.5,
+    "genre": "كوميديا",
+    "poster_path": "/gvr7lKKIpNrzrrQ9usbvX60mc3M.jpg",
+    "overview": "تتم فكرة الضيف من خلال استدعاء الضيف بواسطة المغنية والإعلامية اروى وذلك لأنها قد اشتهرت بتقديم البرامج ولثقة الفنانين بها وإجلاس الضيف على كرسي كهربائي دون علمه ثم يحاول الضيف القيام من على الكرسي ولكن يتم تربيطة بالسلاسل ولا يستطيع النهوض ويظهر رامز ويضل ينظر إلى الضيف مع بعض التعليقات الكوميدية ثم يقف رامز بعيدًا عن الضيف ويطلقه وعندما يأتي يريد الوصول إلى رامز لينتقم منه يسقط في بركة ماء ثم يضل يعاني حتى يخرجه رامز ثم يأتي رامز ويذهب إلى الطابق العلوي فيظطر الضيف إلى صعود الدرج الذي يكون زلقًا وقتها ثم يسقط وينتهي المقلب",
+    "trailer_key": "MoZ13Ym8d6A",
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "أحبك-من-زمان-1620682",
+    "title": "أحبك من زمان",
+    "title_ar": "أحبك من زمان",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 6.4,
+    "genre": "رومنسية",
+    "poster_path": "/cj3uvHPlfEmdy8veYczXs7ibHah.jpg",
+    "overview": "تدور الأحداث حول \"هيا\" التي تكتشف حقيقة مشاعرها تجاه صديقها المقرب \"جواد\" بعد إعلان خطوبته، لتبدأ رحلة من التساؤلات حول الحدود الفاصلة بين الصداقة والحب.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "واي-فاي-285172",
+    "title": "واي فاي",
+    "title_ar": "واي فاي",
+    "type": "مسلسل",
+    "year": 2012,
+    "rating": 9.0,
+    "genre": "كوميديا",
+    "poster_path": "/hd3PXrLEbDbcjUjOR0nm2TYspEV.jpg",
+    "overview": "برنامج كوميدي خليجي منوع يضم نخبة من نجوم الفن في الخليج، يعرض مشاهد كوميدية متفرقة تعتمد على تقليد شخصيات إعلامية معروفة وشخصيات عامة وسياسية، بالإضافة إلى تقليد برامج أو أحداث مهمة مرت عبر وسائل الإعلام أو الإنترنت تهم المجتمع السعودي والعربي.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "the-odyssey-1368337",
+    "title": "The Odyssey",
+    "title_ar": "الأوديسة",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 8.0,
+    "genre": "مغامرة",
+    "poster_path": "/nyaGxU6fpu360RYmRFSpZteQTEI.jpg",
+    "overview": "يتتبع الفيلم رحلة أوديسيوس، الملك الأسطوري لـ \"إيثاكا\"، في عودته الطويلة والخطرة إلى وطنه بعد انتهاء حرب طروادة. تستغرق رحلته عشر سنوات، وخلالها يواجه أوديسيوس العديد من التحديات والمخاطر والمخلوقات الأسطورية",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "ted-lasso-97546",
+    "title": "Ted Lasso",
+    "title_ar": "Ted Lasso",
+    "type": "مسلسل",
+    "year": 2020,
+    "rating": 8.3,
+    "genre": "دراما",
+    "poster_path": "/uRHsiw1wLxPHFXkkv4Ix1s0O6f4.jpg",
+    "overview": "\"جيسون سوديكس\" يؤدي دور \"تيد لاسو\"، مدرب كرة القدم الأمريكية الذي عُيّن مديراً فنياً لفريق كرة قدم إنكليزي رغم افتقاره إلى الخبرة. لكنه يعوّض المعرفة التي تنقصه بتفاؤله وعزيمته القوية… والبسكويت.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "군체-1375646",
+    "title": "군체",
+    "title_ar": "مستعمرة",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 8.1,
+    "genre": "حركة",
+    "poster_path": "/2ahVcdQM1ZBzSqXiAqu681l96Ns.jpg",
+    "overview": "بالبروفيسور \"سي-جونغ\" فجأةً في جحيمٍ دامٍ، حين يتفشّى فيروسٌ سريع التحوّر خلال مؤتمرٍ للتقنية الحيوية، فتُبادر السلطات إلى إغلاق المنشأة وعزلها بالكامل. وإذ يجد نفسه محاصرًا بلا أي منفذٍ للنجاة، يخوض \"سي-جونغ\" مع حفنةٍ من الناجين معركة بقاءٍ محمومة، بينما يتحوّل المصابون أمام أعينهم إلى وحوشٍ لا تُبقي ولا تذر.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "paradise-hotel-67707",
+    "title": "Paradise Hotel",
+    "title_ar": "Paradise Hotel",
+    "type": "مسلسل",
+    "year": 2005,
+    "rating": 5.0,
+    "genre": "واقع",
+    "poster_path": "/aeU8fC5JaG2BkWqgMX7yPfX7dfW.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "lucky-strike-1594914",
+    "title": "Lucky Strike",
+    "title_ar": "ضربة حظ",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 7.6,
+    "genre": "حركة",
+    "poster_path": "/kzRAd7mj39ZY3FGNrDdZjqx56tn.jpg",
+    "overview": "جندي أمريكي جريح يقاتل من أجل البقاء خلف خطوط العدو خلال معركة الثغرة في الحرب العالمية الثانية ضد الألمان، معتمدًا على غريزته وفنون التجسس وجهاز لاسلكي يدوي للإفلات من الأسر وإيجاد طريقه للعودة إلى وحدته.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "the-tonight-show-starring-jimmy-fallon-59941",
+    "title": "The Tonight Show Starring Jimmy Fallon",
+    "title_ar": "The Tonight Show Starring Jimmy Fallon",
+    "type": "مسلسل",
+    "year": 2014,
+    "rating": 5.8,
+    "genre": "كوميديا",
+    "poster_path": "/1N4o5PmmqhlVDrcdJ2RlCFWbLGX.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "7-كلاب-1316427",
+    "title": "7 كلاب",
+    "title_ar": "الكلاب السبعة",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 6.1,
+    "genre": "حركة",
+    "poster_path": "/sqtFKaktHBb52pR3jygsjDAPJ1o.jpg",
+    "overview": "تتمحور الأحداث حول (خالد العزازي)، عميل الإنتربول، الذي يجد نفسه مضطرًا للتعاون مع (غالي أبو داود)، أحد أعضاء عصابة (الكلاب السبعة)، في مهمة مشتركة لمكافحة تجارة المخدرات، مما يضعهما في مواجهة سلسلة من الأزمات المعقدة.",
+    "trailer_key": "wiBwjlrQD1Q",
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "الكبير-أوي-52698",
+    "title": "الكبير أوي",
+    "title_ar": "الكبير أوي",
+    "type": "مسلسل",
+    "year": 2010,
+    "rating": 7.0,
+    "genre": "كوميديا",
+    "poster_path": "/vZ6mCFQazwMxZ1uOm2OmGX9tA5e.jpg",
+    "overview": "بعد وفاة الكبير آوي تدور أحداث المسلسل حول مواقف كوميدية بين أبنائه واختلاف ثقافتهم وعاداتهم وتقاليدهم",
+    "trailer_key": "0Gr5EsNDLKo",
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "يد-إلهية‎d-27744",
+    "title": "يد إلهية‎D",
+    "title_ar": "يد إلهية‎D",
+    "type": "فيلم",
+    "year": 2002,
+    "rating": 6.6,
+    "genre": "دراما",
+    "poster_path": "/pczspk2mTCVmG5eyErnB4BZD2HY.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "hello-taxi-246007",
+    "title": "Hello Taxi",
+    "title_ar": "Hello Taxi",
+    "type": "مسلسل",
+    "year": 2024,
+    "rating": 0.0,
+    "genre": "دراما",
+    "poster_path": "/szxrw5M292Un5oB74ZyCsmdhR8j.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "the-last-house-1284041",
+    "title": "The Last House",
+    "title_ar": "محتجزون في منزلنا",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 6.8,
+    "genre": "رعب",
+    "poster_path": "/6JU7E8Vv2M11egkctWVOScxWR75.jpg",
+    "overview": "تجد عائلة نفسها محاصرة داخل منزلها في ظروف غامضة، وتضطر إلى التكاتف للبقاء على قيد الحياة في ظل تناقص الموارد ووجود قوة غامضة تمنعها من الفرار.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "reacher-108978",
+    "title": "Reacher",
+    "title_ar": "جاك ريتشر",
+    "type": "مسلسل",
+    "year": 2022,
+    "rating": 8.1,
+    "genre": "حركة ومغامرة",
+    "poster_path": "/uV4RKiU5uXOIuxTUy6NZbSYMY77.jpg",
+    "overview": "حين يُعتقل \"جاك ريتشر\" ضابط الشرطة العسكرية على جريمة قتل لم يرتكبها، يجد نفسه في وسط مؤامرة مميتة مليئة برجال الشرطة غير الشرفاء ورجال الأعمال المريبين والسياسيين الماكرين. عليه أن يستخدم ذكاءه ليكتشف ما يحدث في \"مارغريف\"، \"جورجيا\".",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "the-death-of-robin-hood-1284465",
+    "title": "The Death of Robin Hood",
+    "title_ar": "موت روبن هود",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 6.4,
+    "genre": "مغامرة",
+    "poster_path": "/lvrejf8tNqKmOq1OA6zXNqzrx4U.jpg",
+    "overview": "بينما يصارع ماضيه المليء بالجرائم والقتل، يتعرض روبن هود لإصابة خطيرة بعد معركة ظن أنها ستكون الأخيرة في حياته. وبين يدي امرأة غامضة، تُمنح له فرصة جديدة للخلاص والتكفير عما ارتكبه في الماضي.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "paradise-hotel-36109",
+    "title": "Paradise Hotel",
+    "title_ar": "Paradise Hotel",
+    "type": "مسلسل",
+    "year": 2009,
+    "rating": 5.7,
+    "genre": "واقع",
+    "poster_path": "/3GMScGXDZHiqoYnm715Oo9NASqi.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "michael-936075",
+    "title": "Michael",
+    "title_ar": "مايكل",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 8.7,
+    "genre": "موسيقى",
+    "poster_path": "/z2yFF5Zh86tZAzlcZ4Y0jBUQDRe.jpg",
+    "overview": "يروي الفيلم قصة حياة مايكل جاكسون بعيداً عن الموسيقى، متتبعاً رحلته منذ اكتشاف موهبته الاستثنائية كقائد لفرقة \"جاكسون فايف\"، وصولاً إلى الفنان الملهم الذي دفع طموحه الإبداعي سعياً حثيثاً ليصبح أعظم فنان استعراضي في العالم. ومن خلال تسليط الضوء على حياته خارج الأضواء وبعض أكثر عروضه شهرة في بدايات مسيرته المنفردة، يمنح الفيلم الجمهور فرصة لمشاهدة مايكل جاكسون كما لم يروه من قبل. من هنا تبدأ قصته.",
+    "trailer_key": "3zOLzsbOleM",
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "gran-hermano-37528",
+    "title": "Gran hermano",
+    "title_ar": "Gran hermano",
+    "type": "مسلسل",
+    "year": 2001,
+    "rating": 4.5,
+    "genre": "واقع",
+    "poster_path": "/snIRCY6Qhei08YUNQjjZI2gc4CK.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "إيجي-بست-1514381",
+    "title": "إيجي بست",
+    "title_ar": "إيجي بست",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 0.0,
+    "genre": "دراما",
+    "poster_path": "/cwtLRUsaIWqQ3bFWmIso5qwnXzv.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "ليالي-الحلمية-52560",
+    "title": "ليالي الحلمية",
+    "title_ar": "ليالي الحلمية",
+    "type": "مسلسل",
+    "year": 1987,
+    "rating": 8.1,
+    "genre": "دراما",
+    "poster_path": "/b192ygPjNQxd1ND24WxgXpSNury.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "کفرناحوم-517814",
+    "title": "کفرناحوم",
+    "title_ar": "كفرناحوم",
+    "type": "فيلم",
+    "year": 2018,
+    "rating": 8.2,
+    "genre": "دراما",
+    "poster_path": "/dQWfLmt9aU6Xe6yNPmEZJoLOPxX.jpg",
+    "overview": "زين ، صبي يبلغ من العمر 12 عامًا يسعى للبقاء على قيد الحياة في شوارع بيروت ، يقاضي والديه لأنهما جلباه إلى عالم غير عادل ، حيث أن كونك لاجئًا بدون وثائق يعني أنه يمكن بسهولة حرمانك من حقوقك.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "ask-yarası-320516",
+    "title": "Ask Yarası",
+    "title_ar": "جرح الحب",
+    "type": "مسلسل",
+    "year": 2026,
+    "rating": 0.0,
+    "genre": "دراما",
+    "poster_path": "/t5uM9N0Hz8d5uDuI1dlX3Ce8bWX.jpg",
+    "overview": "عندما يعلم بارس أن والده الثري ما زال على قيد الحياة، يصبح وريث ثروة أكابي، فيترك وراءه حياته البائسة. ولتسوية نزاع عائلي، يتزوج زواجًا مدبرًا من آسيا، بينما يكافح في الوقت نفسه لنسيان حبه السابق، غول.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "minions-&-monsters-1315772",
+    "title": "Minions & Monsters",
+    "title_ar": "المينيون والوحوش",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 7.0,
+    "genre": "مغامرة",
+    "poster_path": "/uYs4IJdDQvnrNvVtYBNmjiHqbmF.jpg",
+    "overview": "هذه هي القصة الصاخبة والمضحكة والحقيقية تمامًا عن كيفية غزو المينيونز لهوليوود، وكيف أصبحوا نجومًا سينمائيين، وخسروا كل شيء، وأطلقوا العنان للوحوش على العالم، ثم تكاتفوا معًا لمحاولة إنقاذ الكوكب من الفوضى التي أحدثوها للتو",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "silo-125988",
+    "title": "Silo",
+    "title_ar": "Silo",
+    "type": "مسلسل",
+    "year": 2023,
+    "rating": 8.2,
+    "genre": "خيال علمي وفانتازيا",
+    "poster_path": "/gMYZZvnkVNTqSVnVCphWbPXwWwb.jpg",
+    "overview": "مسلسل Silo (الصومعة) هو عمل خيال علمي ، وتدور أحداثه في مستقبل بائس ومجهول حيث تعيش بقايا البشرية داخل صومعة عملاقة تمتد لـ 144 طابقاً تحت الأرض لحمايتهم من العالم الخارجي السام والقاتل. تحكم هذه الصومعة قوانين صارمة للغاية تمنع التساؤل عن الماضي أو ما يوجد في الخارج، لكن الأحداث تشتعل عندما تبدأ مهندسة ميكانيكية تُدعى جولييت بالتحقيق في موت غامض لأحد المقربين منها، مما يقودها تدريجياً نحو كشف أسرار مظلمة ومؤامرات تخفيها السلطات عن حقيقة الصومعة والعالم الخارجي",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "moana-1108427",
+    "title": "Moana",
+    "title_ar": "موانا",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 6.0,
+    "genre": "عائلي",
+    "poster_path": "/wL0fAAvNd2Uk7Sok620oVaaItIS.jpg",
+    "overview": "تستجيب موانا المراهقة لنداء المحيط، ولأول مرة، تبحر إلى ما وراء الشعاب المرجانية لجزيرتها موتوني مع نصف الإله سيئ السمعة ماوي في رحلة لا تُنسى لاستعادة الازدهار لشعبها",
+    "trailer_key": "IdksXHD3slM",
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "the-mentalist-5920",
+    "title": "The Mentalist",
+    "title_ar": "الوسيط الروحي",
+    "type": "مسلسل",
+    "year": 2008,
+    "rating": 8.4,
+    "genre": "جريمة",
+    "poster_path": "/mMC4qAitti5tHnQ0w8mc3HRC7qk.jpg",
+    "overview": "يستخدم باتريك جين، وهو وسيط نفسي سابق للمشاهير، مهاراته الحادة في الملاحظة والخبرة في \"قراءة\" الناس لحل الجرائم الخطيرة مع مكتب التحقيقات في كاليفورنيا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "твоё-сердце-будет-разбито-1523145",
+    "title": "Твоё сердце будет разбито",
+    "title_ar": "الذهاب",
+    "type": "فيلم",
+    "year": 2026,
+    "rating": 7.1,
+    "genre": "رومنسية",
+    "poster_path": "/iGpMm603GUKH2SiXB2S5m4sZ17t.jpg",
+    "overview": "لا يوجد وصف متاح حاليًا.",
+    "trailer_key": null,
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
+      }
+    ]
+  },
+  {
+    "id": "無職転生-～異世界行ったら本気だす～-94664",
+    "title": "無職転生 ～異世界行ったら本気だす～",
+    "title_ar": "موشوكو تينسي",
+    "type": "مسلسل",
+    "year": 2021,
+    "rating": 8.5,
+    "genre": "حركة ومغامرة",
+    "poster_path": "/8RukSzEsRnNIPIOQflg5cBwx5f2.jpg",
+    "overview": "عندما تدهس شاحنة شابًا يبلغ من العمر 34 سنة، لا تنتهي قصته هناك. بل يعاد بعثه في عالم جديد كرضيع، ينتهز \"رودي\" كلّ فرصة ليعيش الحياة التي لطالما أرادها. مدعومًا بأصدقاء جُدد، وبعض القدرات السحرية المكتسبة حديثًا، والشجاعة لفعل الأشياء التي كان يحلم بها دائمًا، ينطلق في مغامرة ملحمية، مع تذكره لكل تجربته السابقة.",
+    "trailer_key": "U_5FAWLkETo",
+    "platforms": [
+      {
+        "name": "",
+        "affiliate_url": ""
       }
     ]
   }
