@@ -379,6 +379,12 @@
       ['أحدث المسلسلات', list.filter(t=>t.type==='مسلسل')],
       ['الأعلى تقييمًا', [...list].sort((a,b)=>b.rating-a.rating)],
     ];
+    if(!activeGenre){
+      genres.forEach(g=>{
+        const items = list.filter(t=> t.genre === g);
+        if(items.length >= 2) railDefs.push([g, items]);
+      });
+    }
     let any = false;
     railDefs.forEach(([label, items])=>{
       if(!items.length) return;
@@ -388,6 +394,10 @@
       sec.innerHTML = `<div class="rail-head"><h2><span class="bar"></span>${label}</h2><span class="more">عرض الكل ←</span></div>
         <div class="rail-track"></div>`;
       railsWrap.appendChild(sec);
+      if(genres.includes(label)){
+        sec.querySelector('.more').onclick = ()=>{ activeGenre = label; renderAll(); scrollTo({top:0, behavior:'smooth'}); };
+        sec.querySelector('.more').style.cursor = 'pointer';
+      }
       const track = sec.querySelector('.rail-track');
       items.forEach((item,i)=> track.appendChild(makeCard(item,i)));
     });
