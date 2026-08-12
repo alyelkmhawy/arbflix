@@ -78,6 +78,7 @@
   .search-overlay input{ flex:1; background:none; border:none; outline:none; color:var(--text); font-family:'Tajawal'; font-size:16px; }
   .search-overlay .close{ color:var(--text-dim); font-size:22px; cursor:pointer; padding:4px 8px; }
   .search-results{ margin-top:20px; display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:14px; overflow-y:auto; }
+  .search-results .poster-card{ flex:none; width:100%; }
   .search-empty{ color:var(--text-dim); text-align:center; margin-top:40px; font-size:14px; }
 
   .chips{ display:flex; gap:10px; padding:16px 5vw; overflow-x:auto; position:relative; z-index:1; }
@@ -445,9 +446,10 @@
   function openSearch(){ overlay.classList.add('open'); setTimeout(()=>input.focus(),300); }
   function closeSearch(){ overlay.classList.remove('open'); input.value=''; renderSearch(); }
   const TMDB_KEY = '78c8955796d2c9973becd049be61f255';
-  let searchDebounce;
+  let searchDebounce, searchReqId = 0;
   function renderSearch(){
     const q = input.value.trim();
+    const myReq = ++searchReqId;
     results.innerHTML='';
     if(!q){ empty.style.display='block'; empty.textContent='اكتب اسم فيلم أو مسلسل للبحث'; return; }
     const found = ALL.filter(item=> item.title.includes(q) || (item.title_ar||'').includes(q) || item.title.toLowerCase().includes(q.toLowerCase()));
@@ -457,16 +459,18 @@
 
     clearTimeout(searchDebounce);
     if(q.length < 2) return;
-    searchDebounce = setTimeout(()=> liveSearch(q, found.map(f=>f.id)), 450);
+    searchDebounce = setTimeout(()=> liveSearch(q, found.length, myReq), 450);
   }
 
-  async function liveSearch(q, existingIds){
+  async function liveSearch(q, hadLocalResults, reqId){
     try{
       const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_KEY}&language=ar-EG&query=${encodeURIComponent(q)}`);
+      if(reqId !== searchReqId) return; // المستخدم كتب حاجة تانية، تجاهل الرد المتأخر ده
       if(!res.ok) return;
       const data = await res.json();
+      if(reqId !== searchReqId) return;
       const items = (data.results||[]).filter(it=> (it.media_type==='movie' || it.media_type==='tv') && it.poster_path);
-      if(!items.length){ if(!existingIds.length){ empty.style.display='block'; empty.textContent='مفيش نتائج لـ "'+q+'"'; } return; }
+      if(!items.length){ if(!hadLocalResults){ empty.style.display='block'; empty.textContent='مفيش نتائج لـ "'+q+'"'; } return; }
       empty.style.display = 'none';
       items.slice(0,12).forEach((it,i)=>{
         const title = it.title || it.name || '';
