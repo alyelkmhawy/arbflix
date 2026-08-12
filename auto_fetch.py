@@ -11,6 +11,7 @@ ARBFLIX — الاستيراد التلقائي (يشتغل من GitHub Actions 
 - PLATFORM_NAME: (اختياري) اسم المنصة الافتراضية (Shahid افتراضيًا)
 """
 
+import datetime
 import json
 import os
 import requests
@@ -118,6 +119,22 @@ def discover_ids():
     return merged[:MAX_ITEMS]
 
 
+def write_sitemap(items):
+    today = datetime.date.today().isoformat()
+    urls = [("https://arbflix.site/", "1.0")]
+    for item in items:
+        loc = f"https://arbflix.site/movie.html?id={item['id']}"
+        urls.append((loc, "0.7"))
+
+    body = "\n".join(
+        f"  <url><loc>{loc}</loc><lastmod>{today}</lastmod><priority>{priority}</priority></url>"
+        for loc, priority in urls
+    )
+    xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{body}\n</urlset>\n'
+    with open("sitemap.xml", "w", encoding="utf-8") as f:
+        f.write(xml)
+
+
 def main():
     if not API_KEY:
         print("⚠️  TMDB_API_KEY مش موجود كـ Secret.")
@@ -134,7 +151,9 @@ def main():
     with open("movies-data.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
 
-    print(f"\nتم تحديث movies-data.json تلقائيًا - {len(results)} عنصر")
+    write_sitemap(results)
+
+    print(f"\nتم تحديث movies-data.json و sitemap.xml تلقائيًا - {len(results)} عنصر")
 
 
 if __name__ == "__main__":

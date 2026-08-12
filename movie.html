@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pageTitle">ARBFLIX</title>
+<meta name="description" id="metaDesc" content="مراجعة وتقييم ومكان مشاهدة الفيلم أو المسلسل على ARBFLIX.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" id="canonicalLink" href="https://arbflix.site/movie.html">
+<meta property="og:type" content="video.movie">
+<meta property="og:site_name" content="ARBFLIX">
+<meta property="og:title" id="ogTitle" content="ARBFLIX">
+<meta property="og:description" id="ogDesc" content="مراجعة وتقييم ومكان مشاهدة على ARBFLIX.">
+<meta property="og:image" id="ogImage" content="">
+<meta property="og:url" id="ogUrl" content="https://arbflix.site/movie.html">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json" id="jsonLd"></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23E8B34D'/%3E%3Cpolygon points='40,30 40,70 72,50' fill='%231A1200'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -155,6 +166,28 @@
     }
 
     document.getElementById('pageTitle').textContent = movie.title + ' — ARBFLIX';
+    const pageUrl = 'https://arbflix.site/movie.html?id=' + encodeURIComponent(movie.id);
+    const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '';
+    const shortDesc = (movie.overview || '').slice(0, 155);
+    document.getElementById('metaDesc').setAttribute('content', shortDesc);
+    document.getElementById('canonicalLink').setAttribute('href', pageUrl);
+    document.getElementById('ogTitle').setAttribute('content', movie.title + ' — ARBFLIX');
+    document.getElementById('ogDesc').setAttribute('content', shortDesc);
+    document.getElementById('ogImage').setAttribute('content', posterUrl);
+    document.getElementById('ogUrl').setAttribute('content', pageUrl);
+    document.getElementById('jsonLd').textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": movie.type === 'مسلسل' ? "TVSeries" : "Movie",
+      "name": movie.title,
+      "alternateName": movie.title_ar || undefined,
+      "image": posterUrl || undefined,
+      "description": movie.overview || undefined,
+      "genre": movie.genre || undefined,
+      "datePublished": movie.year ? String(movie.year) : undefined,
+      "aggregateRating": movie.rating ? {
+        "@type": "AggregateRating", "ratingValue": movie.rating, "bestRating": "10", "ratingCount": "1"
+      } : undefined
+    });
 
     const platformsHtml = movie.platforms.map((p,i)=>{
       const cls = i===0 ? 'ticket-btn' : 'ticket-btn secondary';
