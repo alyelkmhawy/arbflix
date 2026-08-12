@@ -48,7 +48,7 @@ BASE = "https://api.themoviedb.org/3"
 def fetch_item(tmdb_id, kind):
     endpoint = "movie" if kind == "فيلم" else "tv"
     url = f"{BASE}/{endpoint}/{tmdb_id}"
-    r = requests.get(url, params={"api_key": API_KEY, "language": LANGUAGE})
+    r = requests.get(url, params={"api_key": API_KEY, "language": LANGUAGE, "append_to_response": "videos"})
     r.raise_for_status()
     d = r.json()
 
@@ -63,6 +63,17 @@ def fetch_item(tmdb_id, kind):
 
     slug = title_original.lower().replace(" ", "-").replace(":", "")
 
+    trailer_key = None
+    for v in (d.get("videos", {}) or {}).get("results", []):
+        if v.get("site") == "YouTube" and v.get("type") == "Trailer":
+            trailer_key = v.get("key")
+            break
+    if not trailer_key:
+        for v in (d.get("videos", {}) or {}).get("results", []):
+            if v.get("site") == "YouTube":
+                trailer_key = v.get("key")
+                break
+
     return {
         "id": f"{slug}-{tmdb_id}",
         "title": title_original,   # العنوان الرئيسي بلغته الأصلية (إنجليزي للأفلام الأجنبية)
@@ -73,6 +84,7 @@ def fetch_item(tmdb_id, kind):
         "genre": genre,
         "poster_path": poster_path,
         "overview": overview,
+        "trailer_key": trailer_key,
         "platforms": [DEFAULT_PLATFORM],
     }
 

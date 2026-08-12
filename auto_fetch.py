@@ -27,7 +27,8 @@ DEFAULT_PLATFORM = {"name": PLATFORM_NAME, "affiliate_url": AFFILIATE_URL}
 
 def fetch_details(tmdb_id, kind):
     endpoint = "movie" if kind == "فيلم" else "tv"
-    r = requests.get(f"{BASE}/{endpoint}/{tmdb_id}", params={"api_key": API_KEY, "language": LANGUAGE})
+    r = requests.get(f"{BASE}/{endpoint}/{tmdb_id}",
+                      params={"api_key": API_KEY, "language": LANGUAGE, "append_to_response": "videos"})
     r.raise_for_status()
     d = r.json()
 
@@ -41,6 +42,17 @@ def fetch_details(tmdb_id, kind):
     overview = d.get("overview") or "لا يوجد وصف متاح حاليًا."
     slug = title_original.lower().replace(" ", "-").replace(":", "")
 
+    trailer_key = None
+    for v in (d.get("videos", {}) or {}).get("results", []):
+        if v.get("site") == "YouTube" and v.get("type") == "Trailer":
+            trailer_key = v.get("key")
+            break
+    if not trailer_key:
+        for v in (d.get("videos", {}) or {}).get("results", []):
+            if v.get("site") == "YouTube":
+                trailer_key = v.get("key")
+                break
+
     return {
         "id": f"{slug}-{tmdb_id}",
         "title": title_original,
@@ -51,6 +63,7 @@ def fetch_details(tmdb_id, kind):
         "genre": genre,
         "poster_path": poster_path,
         "overview": overview,
+        "trailer_key": trailer_key,
         "platforms": [DEFAULT_PLATFORM],
     }
 
@@ -69,39 +82,40 @@ def _pull(path, extra_params=None, kind="فيلم", seen=None, bucket=None):
 
 
 def discover_ids():
-    """يجيب مجموعة (id, kind) من Trending/Upcoming/Popular عالميًا + محتوى مصري/عربي مخصص"""
-    movie_paths = ["trending/movie/week", "movie/upcoming", "movie/popular"]
-    tv_paths = ["trending/tv/week", "tv/popular", "tv/on_the_air"]
+    """يجيب توليفة متوازنة: أجنبي (أفلام+مسلسلات) + مصري + عربي، كل فئة بحصة ثابتة
+    عشان محتوى مصري ما ياكلش مكان الأجنبي ولا العكس"""
+    CATEGORIES = [
+        ("فيلم", "trending/movie/week", {}),
+        ("مسلسل", "trending/tv/week", {}),
+        ("فيلم", "movie/popular", {}),
+        ("مسلسل", "tv/popular", {}),
+        ("فيلم", "movie/upcoming", {}),
+        ("مسلسل", "tv/on_the_air", {}),
+        ("فيلم", "discover/movie", {"with_origin_country": "EG", "sort_by": "popularity.desc"}),
+        ("مسلسل", "discover/tv", {"with_origin_country": "EG", "sort_by": "popularity.desc"}),
+        ("فيلم", "discover/movie", {"with_original_language": "ar", "sort_by": "popularity.desc"}),
+        ("مسلسل", "discover/tv", {"with_original_language": "ar", "sort_by": "popularity.desc"}),
+    ]
+    PER_CATEGORY_CAP = 6  # كل فئة بتاخد حصة متساوية بحد أقصى ٦ عناصر
 
-    movie_pairs, tv_pairs = [], []
     seen = set()
+    category_lists = []
+    for kind, path, extra in CATEGORIES:
+        bucket = []
+        _pull(path, extra, kind=kind, seen=seen, bucket=bucket)
+        category_lists.append(bucket[:PER_CATEGORY_CAP])
 
-    # محتوى مصري بالتحديد (منشأ مصر) - أولوية عشان محتوى مصري ما يتزحلقش برة السقف
-    _pull("discover/movie", {"with_origin_country": "EG", "sort_by": "popularity.desc"},
-          kind="فيلم", seen=seen, bucket=movie_pairs)
-    _pull("discover/tv", {"with_origin_country": "EG", "sort_by": "popularity.desc"},
-          kind="مسلسل", seen=seen, bucket=tv_pairs)
+    # نلف على الفئات بالتبادل (فيلم أجنبي، مسلسل أجنبي، فيلم مصري، مسلسل مصري...)
+    # عشان النتيجة النهائية تبقى متنوعة بدل ما فئة توحدة توكل الباقي
+    merged = []
+    i = 0
+    while len(merged) < MAX_ITEMS and any(category_lists):
+        for lst in category_lists:
+            if i < len(lst):
+                merged.append(lst[i])
+        i += 1
 
-    # محتوى عربي بشكل عام (لغة أصلية عربي) كتغطية إضافية
-    _pull("discover/movie", {"with_original_language": "ar", "sort_by": "popularity.desc"},
-          kind="فيلم", seen=seen, bucket=movie_pairs)
-    _pull("discover/tv", {"with_original_language": "ar", "sort_by": "popularity.desc"},
-          kind="مسلسل", seen=seen, bucket=tv_pairs)
-
-    # بعدين نكمل بالأجانب الرائجة عالميًا
-    for path in movie_paths:
-        _pull(path, kind="فيلم", seen=seen, bucket=movie_pairs)
-    for path in tv_paths:
-        _pull(path, kind="مسلسل", seen=seen, bucket=tv_pairs)
-
-    # نتبادل فيلم/مسلسل عشان النوعين يفضلوا موجودين حتى لو في سقف للعدد
-    pairs = []
-    for a, b in zip(movie_pairs, tv_pairs):
-        pairs.append(a)
-        pairs.append(b)
-    pairs += movie_pairs[len(tv_pairs):] + tv_pairs[len(movie_pairs):]
-
-    return pairs[:MAX_ITEMS]
+    return merged[:MAX_ITEMS]
 
 
 def main():
