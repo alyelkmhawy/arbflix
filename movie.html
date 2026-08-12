@@ -144,11 +144,13 @@
 
     const params = new URLSearchParams(location.search);
     const wanted = params.get('id');
-    const movie = ALL.find(m=> m.id === wanted) || ALL[0];
+    const movie = ALL.find(m=> m.id === wanted);
     const content = document.getElementById('content');
 
     if(!movie){
-      content.innerHTML = `<div class="no-match">مفيش بيانات لعرضها. <a href="index.html">رجوع للرئيسية</a></div>`;
+      content.innerHTML = `<div class="no-match">
+        الفيلم ده مش موجود دلوقتي (يمكن اتحدثت قائمة الأفلام). <a href="index.html">رجوع للرئيسية</a>
+      </div>`;
       return;
     }
 
