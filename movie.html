@@ -145,6 +145,33 @@
     return `<div class="glyph">🎬</div>`;
   }
 
+  const TMDB_KEY = '78c8955796d2c9973becd049be61f255';
+
+  async function fetchLiveMovie(tmdbId, mediaType){
+    const kind = mediaType === 'tv' ? 'مسلسل' : 'فيلم';
+    const endpoint = mediaType === 'tv' ? 'tv' : 'movie';
+    const res = await fetch(`https://api.themoviedb.org/3/${endpoint}/${tmdbId}?api_key=${TMDB_KEY}&language=ar-EG&append_to_response=videos`);
+    if(!res.ok) return null;
+    const d = await res.json();
+    const title = d.original_title || d.original_name || d.title || d.name || '';
+    const titleAr = d.title || d.name || title;
+    const yearRaw = d.release_date || d.first_air_date || '';
+    let trailerKey = null;
+    const vids = (d.videos && d.videos.results) || [];
+    trailerKey = (vids.find(v=> v.site==='YouTube' && v.type==='Trailer') || vids.find(v=> v.site==='YouTube') || {}).key || null;
+    return {
+      id: `tmdb-${mediaType}-${tmdbId}`,
+      title, title_ar: titleAr, type: kind,
+      year: yearRaw ? Number(yearRaw.slice(0,4)) : null,
+      rating: Math.round((d.vote_average||0)*10)/10,
+      genre: (d.genres && d.genres[0] && d.genres[0].name) || 'عام',
+      poster_path: d.poster_path,
+      overview: d.overview || 'لا يوجد وصف متاح حاليًا.',
+      trailer_key: trailerKey,
+      platforms: [{ name: 'Shahid', affiliate_url: `https://shahid.mbc.net/ar/search?q=${encodeURIComponent(title)}` }]
+    };
+  }
+
   async function load(){
     let ALL;
     try{
@@ -155,8 +182,14 @@
 
     const params = new URLSearchParams(location.search);
     const wanted = params.get('id');
-    const movie = ALL.find(m=> m.id === wanted);
+    const tmdbId = params.get('tmdb');
+    const mediaType = params.get('type');
+    let movie = ALL.find(m=> m.id === wanted);
     const content = document.getElementById('content');
+
+    if(!movie && tmdbId){
+      try{ movie = await fetchLiveMovie(tmdbId, mediaType); }catch(e){ movie = null; }
+    }
 
     if(!movie){
       content.innerHTML = `<div class="no-match">

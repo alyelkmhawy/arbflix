@@ -271,14 +271,14 @@
     return `<div class="glyph">🎬</div>`;
   }
 
-  function makeCard(item,i){
+  function makeCard(item,i,hrefOverride){
     const div = document.createElement('div');
     div.className='poster-card';
     div.style.setProperty('--a', palette[i % palette.length]);
     div.innerHTML = `${posterImg(item)}<div class="badge">★ ${item.rating}</div>
       <div class="hover-fx"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(11,14,22,.7)" stroke="var(--gold)" stroke-width="1.5"/><polygon points="10,8 10,16 16,12" fill="var(--gold)"/></svg></div>
       <div class="meta"><div class="t">${item.title}</div><div class="s">${item.type} · ${item.genre}</div></div>`;
-    div.onclick = ()=>{ location.href = 'movie.html?id=' + encodeURIComponent(item.id); };
+    div.onclick = ()=>{ location.href = hrefOverride || ('movie.html?id=' + encodeURIComponent(item.id)); };
     div.addEventListener('touchstart', ()=>{
       document.querySelectorAll('.poster-card.fx-on').forEach(el=> el!==div && el.classList.remove('fx-on'));
       div.classList.add('fx-on');
@@ -444,14 +444,40 @@
   const empty = document.getElementById('searchEmpty');
   function openSearch(){ overlay.classList.add('open'); setTimeout(()=>input.focus(),300); }
   function closeSearch(){ overlay.classList.remove('open'); input.value=''; renderSearch(); }
+  const TMDB_KEY = '78c8955796d2c9973becd049be61f255';
+  let searchDebounce;
   function renderSearch(){
     const q = input.value.trim();
     results.innerHTML='';
     if(!q){ empty.style.display='block'; empty.textContent='اكتب اسم فيلم أو مسلسل للبحث'; return; }
-    const found = ALL.filter(item=> item.title.includes(q) || (item.title_en||'').toLowerCase().includes(q.toLowerCase()));
+    const found = ALL.filter(item=> item.title.includes(q) || (item.title_ar||'').includes(q) || item.title.toLowerCase().includes(q.toLowerCase()));
     empty.style.display = found.length? 'none':'block';
-    if(!found.length){ empty.textContent = 'مفيش نتائج لـ "'+q+'"'; }
+    if(!found.length){ empty.textContent = 'بندور كمان في قاعدة بيانات أوسع...'; }
     found.forEach((item,i)=> results.appendChild(makeCard(item,i)));
+
+    clearTimeout(searchDebounce);
+    if(q.length < 2) return;
+    searchDebounce = setTimeout(()=> liveSearch(q, found.map(f=>f.id)), 450);
+  }
+
+  async function liveSearch(q, existingIds){
+    try{
+      const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_KEY}&language=ar-EG&query=${encodeURIComponent(q)}`);
+      if(!res.ok) return;
+      const data = await res.json();
+      const items = (data.results||[]).filter(it=> (it.media_type==='movie' || it.media_type==='tv') && it.poster_path);
+      if(!items.length){ if(!existingIds.length){ empty.style.display='block'; empty.textContent='مفيش نتائج لـ "'+q+'"'; } return; }
+      empty.style.display = 'none';
+      items.slice(0,12).forEach((it,i)=>{
+        const title = it.title || it.name || '';
+        const card = {
+          title, rating: Math.round((it.vote_average||0)*10)/10,
+          type: it.media_type==='tv' ? 'مسلسل' : 'فيلم', genre: '—', poster_path: it.poster_path
+        };
+        const href = `movie.html?tmdb=${it.id}&type=${it.media_type}`;
+        results.appendChild(makeCard(card, i, href));
+      });
+    }catch(e){ /* fail silently, local results already shown */ }
   }
   input.addEventListener('input', renderSearch);
 </script>

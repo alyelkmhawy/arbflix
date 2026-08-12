@@ -20,7 +20,7 @@ API_KEY = os.environ.get("TMDB_API_KEY", "")
 AFFILIATE_URL = os.environ.get("AFFILIATE_URL", "REPLACE_WITH_YOUR_AFFILIATE_LINK")
 PLATFORM_NAME = os.environ.get("PLATFORM_NAME", "Shahid")
 LANGUAGE = "ar-EG"
-MAX_ITEMS = 36  # أقصى عدد أفلام/مسلسلات هيفضل ظاهر في السايت (الأقدم بيتشال تلقائيًا)
+MAX_ITEMS = 200  # أقصى عدد أفلام/مسلسلات هيفضل ظاهر في السايت (الأقدم بيتشال تلقائيًا)
 
 BASE = "https://api.themoviedb.org/3"
 DEFAULT_PLATFORM = {"name": PLATFORM_NAME, "affiliate_url": AFFILIATE_URL}
@@ -97,7 +97,7 @@ def discover_ids():
         ("فيلم", "discover/movie", {"with_original_language": "ar", "sort_by": "popularity.desc"}),
         ("مسلسل", "discover/tv", {"with_original_language": "ar", "sort_by": "popularity.desc"}),
     ]
-    PER_CATEGORY_CAP = 6  # كل فئة بتاخد حصة متساوية بحد أقصى ٦ عناصر
+    PER_CATEGORY_CAP = 20  # كل فئة بتاخد حصة متساوية بحد أقصى ٢٠ عنصر
 
     seen = set()
     category_lists = []
