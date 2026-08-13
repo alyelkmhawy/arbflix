@@ -14,7 +14,10 @@ ARBFLIX — الاستيراد التلقائي (يشتغل من GitHub Actions 
 import datetime
 import json
 import os
+import re
 import requests
+from urllib.parse import urljoin, urlencode
+from bs4 import BeautifulSoup
 
 API_KEY = os.environ.get("TMDB_API_KEY", "")
 AFFILIATE_URL = os.environ.get("AFFILIATE_URL", "REPLACE_WITH_YOUR_AFFILIATE_LINK")
@@ -23,6 +26,14 @@ LANGUAGE = "ar-EG"
 MAX_ITEMS = 200  # أقصى عدد أفلام/مسلسلات هيفضل ظاهر في السايت (الأقدم بيتشال تلقائيًا)
 
 BASE = "https://api.themoviedb.org/3"
+QFILM_BASE_URL = os.environ.get("QFILM_BASE_URL", "https://a.qfilm.tv").rstrip("/")
+QFILM_TIMEOUT = int(os.environ.get("QFILM_TIMEOUT", "20"))
+QFILM_ENABLED = os.environ.get("QFILM_ENABLED", "true").lower() in {"1", "true", "yes", "on"}
+
+QFILM_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+}
 DEFAULT_PLATFORM = {"name": PLATFORM_NAME, "affiliate_url": AFFILIATE_URL}
 
 
@@ -119,6 +130,134 @@ def discover_ids():
     return merged[:MAX_ITEMS]
 
 
+def _qfilm_get(url):
+    """Fetch a QFilm HTML page. Errors are isolated so TMDb updates still succeed."""
+    r = requests.get(url, headers=QFILM_HEADERS, timeout=QFILM_TIMEOUT)
+    r.raise_for_status()
+    return r.text
+
+
+def qfilm_find_player(title, year=None):
+    """Find the best matching QFilm watch page and extract its iframe URL.
+
+    Returns a small JSON-safe dict or None. This only follows normal
+    search/watch/iframe links; it does not attempt to bypass access controls.
+    """
+    if not QFILM_ENABLED or not title:
+        return None
+
+    try:
+        search_url = f"{QFILM_BASE_URL}/search.php?{urlencode({'keywords': title})}"
+        html = _qfilm_get(search_url)
+        soup = BeautifulSoup(html, "html.parser")
+
+        candidates = []
+        for a in soup.select("a[href]"):
+            text = a.get_text(" ", strip=True)
+            href = a.get("href")
+            if not text or not href:
+                continue
+            url = urljoin(search_url, href)
+            if "/watch.php" not in url:
+                continue
+            candidates.append({"title": text, "url": url})
+
+        if not candidates:
+            return None
+
+        wanted = re.sub(r"[^a-z0-9]+", " ", title.lower()).strip()
+        year_text = str(year) if year else ""
+
+        def score(candidate):
+            text = candidate["title"].lower()
+            normalized = re.sub(r"[^a-z0-9]+", " ", text).strip()
+            s = 0
+            if year_text and year_text in text:
+                s += 30
+            if wanted and wanted in normalized:
+                s += 60
+            wanted_words = set(wanted.split())
+            s += sum(1 for w in wanted_words if len(w) >= 3 and w in normalized)
+            return s
+
+        match = max(candidates, key=score)
+        if score(match) < 2:
+            return None
+
+        watch_html = _qfilm_get(match["url"])
+        watch_soup = BeautifulSoup(watch_html, "html.parser")
+
+        embed_urls = []
+        for iframe in watch_soup.select("iframe[src], iframe[data-src]"):
+            raw = iframe.get("src") or iframe.get("data-src")
+            if not raw:
+                continue
+            url = urljoin(match["url"], raw.strip())
+            if url.startswith(("http://", "https://")):
+                embed_urls.append(url)
+
+        if not embed_urls:
+            return None
+
+        # Follow one normal iframe level, matching the successful Termux test.
+        for embed_url in embed_urls:
+            try:
+                embed_html = _qfilm_get(embed_url)
+                embed_soup = BeautifulSoup(embed_html, "html.parser")
+                nested = []
+                for iframe in embed_soup.select("iframe[src], iframe[data-src]"):
+                    raw = iframe.get("src") or iframe.get("data-src")
+                    if not raw:
+                        continue
+                    player_url = urljoin(embed_url, raw.strip())
+                    if player_url.startswith(("http://", "https://")):
+                        nested.append(player_url)
+                if nested:
+                    return {
+                        "type": "iframe",
+                        "url": nested[0],
+                        "label": "QFilm",
+                        "source_url": match["url"],
+                    }
+            except requests.RequestException:
+                pass
+
+        return {
+            "type": "iframe",
+            "url": embed_urls[0],
+            "label": "QFilm",
+            "source_url": match["url"],
+        }
+
+    except (requests.RequestException, ValueError, UnicodeError) as exc:
+        print(f"⚠️ QFilm فشل لـ {title!r}: {exc}")
+        return None
+    except Exception as exc:
+        print(f"⚠️ QFilm parsing فشل لـ {title!r}: {exc}")
+        return None
+
+
+def enrich_with_qfilm(items):
+    """Attach a pre-resolved QFilm iframe to each generated item."""
+    if not QFILM_ENABLED:
+        return items
+
+    found = 0
+    for item in items:
+        player = qfilm_find_player(item.get("title"), item.get("year"))
+        if player:
+            item["qfilm_player"] = player
+            item["qfilm_source"] = player.get("source_url")
+            found += 1
+            print("  ✓ QFilm -", item.get("title"), "->", player.get("url"))
+        else:
+            item.pop("qfilm_player", None)
+            item.pop("qfilm_source", None)
+
+    print(f"QFilm: تم العثور على Player لـ {found}/{len(items)} عنصر")
+    return items
+
+
 def write_sitemap(items):
     today = datetime.date.today().isoformat()
     urls = [("https://arbflix.site/", "1.0")]
@@ -147,6 +286,11 @@ def main():
             print("✓", results[-1]["type"], "-", results[-1]["title"])
         except Exception as e:
             print("✗ فشل استيراد", tmdb_id, "-", e)
+
+    # Resolve QFilm players during the GitHub Actions build. The frontend is
+    # static, so it cannot execute Python at click-time; storing the iframe
+    # here makes the movie page work without a separate backend.
+    results = enrich_with_qfilm(results)
 
     with open("movies-data.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)

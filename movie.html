@@ -105,6 +105,12 @@
   .ticket-btn:hover{ background:#F5C568; transform:translateY(-2px); }
   .ticket-btn.secondary{ background:var(--card-2); color:var(--text); clip-path:none; border-radius:10px; animation:none; border:1px solid #262D42; }
   .ticket-btn.secondary:hover{ background:#242B40; }
+  .watch-box{ background:var(--card); border:1px solid #232A3D; border-radius:14px; padding:14px; }
+  .watch-player{ position:relative; width:100%; padding-top:56.25%; background:#000; border-radius:10px; overflow:hidden; }
+  .watch-player iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .watch-note{ margin-top:10px; color:var(--text-dim); font-size:12px; line-height:1.7; }
+  .watch-note a{ color:var(--gold); }
+  .watch-loading{ color:var(--text-dim); text-align:center; padding:14px; font-size:13px; }
   .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(120px,1fr)); gap:16px; }
   .mini-card{ aspect-ratio:2/3; border-radius:10px; overflow:hidden; position:relative; background:var(--card); cursor:pointer; transition:transform .25s, box-shadow .25s; }
   .mini-card::before{ content:''; position:absolute; inset:0; background:linear-gradient(160deg, var(--a,#3A2E52), #161A26 75%); }
@@ -231,11 +237,28 @@
       } : undefined
     });
 
-    const platformsHtml = movie.platforms.map((p,i)=>{
-      const cls = i===0 ? 'ticket-btn' : 'ticket-btn secondary';
-      const label = i===0 ? `مشاهدة الآن <span class="plat">على ${p.name}</span>` : `متوفر أيضًا على ${p.name}`;
-      return `<a href="${p.affiliate_url}" class="${cls}" data-affiliate-slot="${p.name.toLowerCase()}">${label}</a>`;
-    }).join('');
+    const qfilmPlayer = movie.qfilm_player && movie.qfilm_player.url ? movie.qfilm_player : null;
+    const platformsHtml = qfilmPlayer
+      ? `<button id="watchNowBtn" class="ticket-btn" type="button">مشاهدة الآن <span class="plat">QFilm</span></button>
+         <div id="watchBox" class="watch-box" hidden>
+           <div class="watch-player">
+             <iframe id="qfilmFrame"
+               src="${escapeAttr(qfilmPlayer.url)}"
+               title="QFilm Player"
+               allow="autoplay; fullscreen; picture-in-picture"
+               allowfullscreen
+               loading="lazy"
+               referrerpolicy="strict-origin-when-cross-origin"></iframe>
+           </div>
+           <div class="watch-note">المشغل مقدم من QFilm.
+             ${qfilmPlayer.source_url ? `<a href="${escapeAttr(qfilmPlayer.source_url)}" target="_blank" rel="noopener noreferrer">فتح صفحة المصدر</a>` : ''}
+           </div>
+         </div>`
+      : movie.platforms.map((p,i)=>{
+          const cls = i===0 ? 'ticket-btn' : 'ticket-btn secondary';
+          const label = i===0 ? `مشاهدة الآن <span class="plat">على ${p.name}</span>` : `متوفر أيضًا على ${p.name}`;
+          return `<a href="${escapeAttr(p.affiliate_url)}" class="${cls}" data-affiliate-slot="${escapeAttr(p.name.toLowerCase())}">${label}</a>`;
+        }).join('');
 
     content.innerHTML = `
       <div class="backdrop">${movie.poster_path ? `<img src="https://image.tmdb.org/t/p/w780${movie.poster_path}" alt="">` : ''}</div>
@@ -288,6 +311,16 @@
       </div>
     `;
 
+    const watchNowBtn = document.getElementById('watchNowBtn');
+    const watchBox = document.getElementById('watchBox');
+    if(watchNowBtn && watchBox){
+      watchNowBtn.addEventListener('click', ()=>{
+        watchBox.hidden = false;
+        watchNowBtn.textContent = 'المشاهدة الآن';
+        watchNowBtn.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+    }
+
     requestAnimationFrame(()=> setTimeout(()=>{
       const ring = document.getElementById('ringFg');
       if(ring) ring.style.strokeDashoffset = 150.8 * (1 - (movie.rating/10));
@@ -304,19 +337,12 @@
       related.appendChild(c);
     });
   }
+  function escapeAttr(value){
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[ch]));
+  }
   load();
-</script>
-<!-- Monetag Multi Tag -->
-<script src="https://quge5.com/88/tag.min.js" data-zone="268320" async data-cfasync="false"></script>
-<script>
-  (function(){
-    if (sessionStorage.getItem('dl_shown')) return;
-    document.addEventListener('click', function once(){
-      sessionStorage.setItem('dl_shown', '1');
-      window.open('https://omg10.com/4/11535239', '_blank');
-      document.removeEventListener('click', once);
-    }, { once: true });
-  })();
 </script>
 </body>
 </html>

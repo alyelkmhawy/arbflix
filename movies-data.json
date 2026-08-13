@@ -15,7 +15,14 @@
         "name": "",
         "affiliate_url": ""
       }
-    ]
+    ],
+    "qfilm_player": {
+      "type": "iframe",
+      "url": "https://wwa.liiivideo.com/embed-y8h7ebqeu2f1.html",
+      "label": "QFilm",
+      "source_url": "https://a.qfilm.tv/watch.php?vid=005c83f25"
+    },
+    "qfilm_source": "https://a.qfilm.tv/watch.php?vid=005c83f25"
   },
   {
     "id": "house-of-the-dragon-94997",

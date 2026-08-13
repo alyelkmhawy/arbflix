@@ -24,6 +24,8 @@ ARBFLIX — سكريبت الاستيراد التلقائي من TMDb
 import json
 import requests
 
+from auto_fetch import enrich_with_qfilm
+
 API_KEY = "78c8955796d2c9973becd049be61f255"  # حط الـ API Key بتاعك هنا
 LANGUAGE = "ar-EG"              # عشان يجيب الاسم والقصة بالعربي لو متاح
 
@@ -101,6 +103,8 @@ def main():
     for sid in SERIES_IDS:
         results.append(fetch_item(sid, "مسلسل"))
         print("✓ استوردت مسلسل:", results[-1]["title"])
+
+    results = enrich_with_qfilm(results)
 
     with open("movies-data.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
